@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
+
+:root{
+  --dark-primary-clr: #0E0F2E;
+  --dark-secondary-clr: #191D43;
+  --dark-accent-clr: #00CCFF; 
+}
+
+/* general */
+*{
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: var(--dark-secondary-clr);
+  color:white;
+  font-size:1rem;
+}
+
+a{
+  color:inherit;
+  text-decoration: none;
+}
+
+ul{
+  list-style-type: none;
+}
+
+/* nav panel */
+.nav-panel{
+  background-color: var(--dark-primary-clr);
+  min-height:100vh;
+  width:240px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-container{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap:0.7em;
+}
+
+.logo-container h1{
+  font-size:2rem;
+}
+
+.logo{
+  width:4rem;
+  height:4rem;
+}
+
+.title-highlight{
+  color: var(--dark-accent-clr);
+  text-decoration:underline;
+  letter-spacing: -1px;
+}
+
+/* navbar */
+
+.navbar{
+  margin-top:2em;
+}
+
+.navbar a {
+  font-size:1.125rem;
+  font-weight:bold;
+}
+
+.navbar a:hover{
+  color:var(--dark-accent-clr);
+  
+}
+
+.navbar li{
+  margin:1em 0;
+  display:flex;
+  gap:0.7em;
+  align-items: center;
+}
+
+.nav-icon{
+  color: var(--dark-accent-clr);
+  font-size: 1.125rem;
+  margin-bottom:0.1em;
+}
+
+
+.container{
+  display:flex;
+}
+
+
+
+/* custom scrollbar */
+::-webkit-scrollbar{
+  width:0.85em;
+}
+
+::-webkit-scrollbar-track{
+  background-color: var(--dark-primary-clr);
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #3d3f51;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background-color: #505262;
+}
+
+::-webkit-scrollbar-button{
+  background-color:var(--dark-accent-clr);
+  height:5px;
+}
+
+/* firefox */
+@supports(scrollbar-color: #3d3f51 var(--dark-primary-clr) ){
+  *{
+    scrollbar-color: #3d3f51 var(--dark-primary-clr);
+  }
+}
+
+/* utils */
+
+.p3{
+  padding:3em;
+}
+
+.py3{
+  padding:3em 0;
+}
+
+/*mobile*/
+@media(max-width: 960px){
+  .hidden-mobile{
+    display:none;
+  }
+  .nav-panel{
+    width:60px;
+  }
+
+  .logo{
+    width:2rem;
+    height:2rem;
+  }
+
+  .nav-icon{
+    font-size:1.5rem;
+  }
+
+  .nav-icon:hover{
+    cursor:pointer;
+    transform:scale(1);
+  }
+
+  .nav-icon:hover{
+    cursor:pointer;
+    transform:scale(1.15);
+    color:white;
+    transition: all 0.3s ease-in-out;
+  }
+}
