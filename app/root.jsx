@@ -50,6 +50,7 @@ function Document({ children, title }) {
 function Layout({ children }) {
   return (
     <div className="container">
+      
       <div className="nav-panel py3">
         <div className="logo-container">
           <img src={logoUrl} alt="sublimetrack logo" className="logo" />
