@@ -1,0 +1,21 @@
+.progressbar-container{
+  display:flex;
+  flex-direction: column;
+  gap:1em;
+  align-items:center;
+}
+
+.progressbar{
+  width:500px;
+  height:2rem; 
+  border-radius:0.5em;
+  background: #00FF95;
+}
+
+.progressbar-spent{
+  background-color:#FF3E4C;
+  height:2rem;
+  width:0;
+  border-radius:0.5em 0 0 0.5em;
+}
+

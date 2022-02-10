@@ -2,9 +2,11 @@ import { useLoaderData, Link } from "remix"
 import { db } from "~/utils/db.server";
 import expenseStyles from '~/styles/expenses.css'
 import overviewStyles from '~/styles/overview.css'
+import progressBarStyles from '~/styles/progressBar.css'
+import ProgressBar from "~/components/overview/progressBar.jsx";
 
 
-export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }];
+export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
 
 
 export const loader = async ({ request })  => {
@@ -96,6 +98,9 @@ export default function Home() {
         </div>
 
 
+        <ProgressBar expense={expenseAmount} budget={budgetAmount}/>
+
+
         {expenses && (
           <>
             <h3>Latest expenses</h3>
@@ -122,6 +127,8 @@ export default function Home() {
           </>
         )}
       </div>
+
+     
     </>
   );
 }
