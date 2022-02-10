@@ -9,7 +9,7 @@ import {
 } from "remix";
 
 import { FiMonitor } from 'react-icons/fi'
-import {IoStatsChart, IoSettingsSharp} from 'react-icons/io5'
+import {IoStatsChart, IoSettingsSharp, IoWalletOutline} from 'react-icons/io5'
 import { MdViewList } from 'react-icons/md'
 
 import logoUrl from '~/images/logo.svg'
@@ -63,6 +63,9 @@ function Layout({ children }) {
           <ul>
             <li>
             <FiMonitor className="nav-icon"/> <Link to="/" className="hidden-mobile">Overview</Link>
+            </li>
+            <li>
+              <IoWalletOutline className="nav-icon"/><Link to="/budget" className="hidden-mobile">Budget</Link>
             </li>
             <li>
               <MdViewList className="nav-icon"/><Link to="/expenses" className="hidden-mobile">Expenses</Link>
