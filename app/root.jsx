@@ -2,20 +2,24 @@ import {
   Links,
   LiveReload,
   Meta,
-  Link,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "remix";
 
-import { FiMonitor } from 'react-icons/fi'
-import {IoStatsChart, IoSettingsSharp, IoWalletOutline} from 'react-icons/io5'
-import { MdViewList } from 'react-icons/md'
+import { FiMonitor } from "react-icons/fi";
+import {
+  IoStatsChart,
+  IoSettingsSharp,
+  IoWalletOutline,
+} from "react-icons/io5";
+import { MdViewList } from "react-icons/md";
 
-import logoUrl from '~/images/logo.svg'
-import globalStyles from '~/styles/global.css'
+import logoUrl from "~/images/logo.svg";
+import globalStyles from "~/styles/global.css";
 
-export const links = () => [{href: globalStyles, rel: 'stylesheet'}]
+export const links = () => [{ href: globalStyles, rel: "stylesheet" }];
 
 export default function App() {
   return (
@@ -50,8 +54,7 @@ function Document({ children, title }) {
 function Layout({ children }) {
   return (
     <div className="container">
-      
-      <div className="nav-panel py3">
+      <div className="nav-panel py-3">
         <div className="logo-container">
           <img src={logoUrl} alt="sublimetrack logo" className="logo" />
           <h1 className="hidden-mobile">
@@ -62,25 +65,70 @@ function Layout({ children }) {
         <nav className="navbar">
           <ul>
             <li>
-            <FiMonitor className="nav-icon"/> <Link to="/" className="hidden-mobile">Overview</Link>
+             
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "active-link" : null
+                }
+              >
+                 <FiMonitor className="nav-icon" />
+                 <span className="hidden-mobile">Overview</span>
+              </NavLink>
             </li>
             <li>
-              <IoWalletOutline className="nav-icon"/><Link to="/budget" className="hidden-mobile">Budget</Link>
+              
+              <NavLink
+                to="/budget"
+                className={({ isActive }) =>
+                  isActive ? "active-link" : null
+                }
+              >
+                <IoWalletOutline className="nav-icon" />
+                <span className="hidden-mobile">Budget</span>
+              </NavLink>
             </li>
             <li>
-              <MdViewList className="nav-icon"/><Link to="/expenses" className="hidden-mobile">Expenses</Link>
+             
+              <NavLink
+                to="/expenses"
+                className={({ isActive }) =>
+                  isActive ? "active-link" : null
+                }
+              >
+                 <MdViewList className="nav-icon" />
+                 <span className="hidden-mobile">Expenses</span>
+              </NavLink>
             </li>
             <li>
-             <IoStatsChart className="nav-icon"/> <Link to="/insights" className="hidden-mobile">Insights</Link>
+           
+              <NavLink
+                to="/insights"
+                className={({ isActive }) =>
+                  isActive ? "active-link" : null
+                }
+              >
+                   <IoStatsChart className="nav-icon" />
+                   <span className="hidden-mobile">Insights</span>
+              </NavLink>
             </li>
             <li>
-              <IoSettingsSharp className="nav-icon"/><Link to="/settings" className="hidden-mobile">Settings</Link>
+              
+              <NavLink
+                to="/settings"
+                className={({ isActive }) =>
+                  isActive ? "active-link" : null
+                }
+              >
+                <IoSettingsSharp className="nav-icon" />
+                <span className="hidden-mobile">Settings</span>
+              </NavLink>
             </li>
           </ul>
         </nav>
       </div>
 
-      <main className="main-container p3">{children}</main>
+      <main className="main-container p-3">{children}</main>
     </div>
   );
 }

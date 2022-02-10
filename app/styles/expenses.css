@@ -1,0 +1,37 @@
+.expenses-list{
+  position:relative;
+}
+
+.expenses-list li{
+  display:flex;
+  align-items:center;
+  gap:4em;
+  border-top:1px solid white;
+}
+
+.expenses-list li:first-child{
+  border-top:none;
+  margin-top:0;
+}
+
+.expenses-list li > div {
+  margin:1em 0;
+}
+
+.expense-title-cat{
+  width:60%;
+}
+
+.expense-title{
+  font-weight: 700;
+}
+
+.expense-date{
+  text-align:left;
+  width:20%;
+}
+
+.expense-amount{
+  text-align:right;
+  width:20%
+}

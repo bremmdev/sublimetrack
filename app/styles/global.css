@@ -29,6 +29,36 @@ ul{
   list-style-type: none;
 }
 
+/* layout */
+
+.container{
+  display:flex;
+}
+
+
+.main-container{
+  flex:auto;
+}
+
+/* typography */
+h2{
+  font-size:2rem;
+}
+
+h3{
+  font-size:1.5rem;
+}
+
+.date-message{
+  font-size:1.5rem;
+  
+}
+
+
+.accent{
+  color: var(--dark-accent-clr);
+}
+
 /* nav panel */
 .nav-panel{
   background-color: var(--dark-primary-clr);
@@ -70,6 +100,9 @@ ul{
 .navbar a {
   font-size:1.125rem;
   font-weight:bold;
+  display:flex;
+  gap:0.7em;
+  align-items: center;
 }
 
 .navbar a:hover{
@@ -79,9 +112,7 @@ ul{
 
 .navbar li{
   margin:1em 0;
-  display:flex;
-  gap:0.7em;
-  align-items: center;
+
 }
 
 .nav-icon{
@@ -90,10 +121,11 @@ ul{
   margin-bottom:0.1em;
 }
 
-
-.container{
-  display:flex;
+.active-link{
+  color:var(--dark-accent-clr);
 }
+
+
 
 
 
@@ -128,11 +160,45 @@ ul{
 
 /* utils */
 
-.p3{
+.btn{
+  padding:0.7em 1.5em;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.btn-primary{
+  background-color: var(--dark-accent-clr);
+  color:var(--dark-primary-clr);
+  opacity:1;
+}
+
+.btn-primary:hover{
+  opacity:0.85;
+  transition: opacity 0.25s ease-in;
+}
+
+.pos-left{
+  position:absolute;
+  right:0;
+}
+
+.my-1{
+  margin:1em 0;
+}
+
+.my-2{
+  margin:2em 0;
+}
+
+.my-3{
+  margin:3em 0;
+}
+
+.p-3{
   padding:3em;
 }
 
-.py3{
+.py-3{
   padding:3em 0;
 }
 
@@ -159,6 +225,10 @@ ul{
     transform:scale(1);
   }
 
+  .active-link .nav-icon{
+    color:white;
+  }
+  
   .nav-icon:hover{
     cursor:pointer;
     transform:scale(1.15);
