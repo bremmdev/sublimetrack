@@ -6,7 +6,8 @@
 }
 
 .progressbar{
-  width:500px;
+  width:80%;
+  max-width:500px;
   height:2rem; 
   border-radius:0.5em;
   background: #00FF95;
@@ -18,4 +19,15 @@
   width:0;
   border-radius:0.5em 0 0 0.5em;
 }
+
+@media(max-width:1200px){
+  .progressbar-container{
+    align-items:flex-start;
+  }
+  .progressbar{
+    width:100%;
+    max-width:500px;
+  }
+}
+
 

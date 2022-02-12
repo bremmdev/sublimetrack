@@ -1,8 +1,6 @@
 .summary-card{
   display:flex;
   justify-content: flex-start;
-  width:50%;
-  max-width:600px;
 }
 
 .summary-card > div {
@@ -15,6 +13,39 @@
 }
 
 .large-text{
-  font-size:1.8rem;
+  font-size:1.6rem;
   font-weight:700;
+}
+
+.expenses-chart h3{
+  text-align:center;
+}
+
+.doughnut-container{
+  width:90%;
+  max-width:400px;
+  margin:0 auto;
+}
+
+@media(max-width:960px){
+  .large-text{
+    font-size:1.5rem;
+  }
+}
+
+
+@media(max-width:600px){
+  .large-text{
+    font-size:1.3rem;
+  }
+
+  .summary-card > div {
+    padding:0 1em;
+  }
+}
+
+@media(max-width: 1400px){
+  .summary-card > div {
+    padding:0 1.5em;
+  }
 }

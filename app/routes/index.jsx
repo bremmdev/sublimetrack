@@ -4,12 +4,24 @@ import expenseStyles from '~/styles/expenses.css'
 import overviewStyles from '~/styles/overview.css'
 import progressBarStyles from '~/styles/progressBar.css'
 import ProgressBar from "~/components/overview/progressBar.jsx";
-
+import DoughnutChart from "~/components/overview/DoughnutChart.jsx";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
 
+const colors = {
+  utilities: '#FF5555',
+  recreation: '#00FF95',
+  insurance: 'skyblue',
+  food: '#EEE'
+}
+
 
 export const loader = async ({ request })  => {
+
+  const currDate = new Date()
+  const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
+  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0);
+
 
   const user = await db.user.findUnique({
     where:{
@@ -18,12 +30,11 @@ export const loader = async ({ request })  => {
     include: {
       budgets: true
     }
+      
   })
 
-  const currDate = new Date()
-  const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
-  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0);
-  //console.log(user)
+
+  console.log(user)
 
  console.log(endOfMonth)
 
@@ -31,8 +42,8 @@ export const loader = async ({ request })  => {
       where: {
         userId: user.id,
         date: {
-          gt: startOfMonth,
-          lt: endOfMonth
+          gte: startOfMonth,
+          lte: endOfMonth
         }
       },
       orderBy: { date: "desc" },
@@ -42,7 +53,7 @@ export const loader = async ({ request })  => {
     
     })
 
-     const data ={user, expenses}
+     const data ={user, expenses, startOfMonth}
     
   return data;
 };
@@ -51,84 +62,106 @@ export const loader = async ({ request })  => {
 
 
 export default function Home() {
-  const { user, expenses } = useLoaderData();
+  const { user, expenses, startOfMonth } = useLoaderData();
 
-  /* calculate values for summary card */
+  //get budget of the current month
+  const currBudget = user?.budgets?.find(
+    (budget) =>
+      new Date(budget.startDate).toLocaleDateString() ===
+      new Date(startOfMonth).toLocaleDateString()
+  );
 
-  const budgetAmount = +user.budgets[0].amount
-  const expenseAmount = Math.abs(expenses.reduce((prev, exp) => prev + +exp.amount, 0))
-  const balanceAmount = budgetAmount - expenseAmount
-  
-
+  //calculate expenses and balance
+  const budgetAmount = +currBudget.amount || 0;
+  const expenseAmount =
+    Math.abs(expenses?.reduce((prev, exp) => prev + +exp.amount, 0)) || 0;
+  const balanceAmount = budgetAmount - expenseAmount;
 
   const currDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-//  console.log(currDate);
-//  console.log(expenses);
-
-
-
 
   return (
-    <>
-      <div>
+    <div className="grid">
+      <div className="welcome span-two">
         <h2>
           Hi, <span className="accent">{user.firstName}!</span>
         </h2>
-        <p className="date-message my-1">
+        <p className="date-message">
           Today is <span className="accent">{currDate}</span>
         </p>
-
-        <div className="summary-card my-3">
-          <div className="summary-card-balance">
-            <h3>Balance</h3>
-            <span className="accent large-text">${balanceAmount.toFixed(2)}</span>
-          </div>
-          <div className="summary-card-budget">
+      </div>
+      <div className="summary-card">
+        <div className="summary-card-balance">
+          <h3>Balance</h3>
+          <span className="accent large-text">${balanceAmount.toFixed(2)}</span>
+        </div>
+        <div className="summary-card-budget">
           <h3>Budget</h3>
           <span className="accent large-text">${budgetAmount.toFixed(2)}</span>
-          </div>
-          <div className="summary-card-expenses">
-            <h3>Expenses</h3>
-            <span className="accent large-text">${expenseAmount.toFixed(2)}</span>
-          </div>
         </div>
+        <div className="summary-card-expenses">
+          <h3>Expenses</h3>
+          <span className="accent large-text">${expenseAmount.toFixed(2)}</span>
+        </div>
+      </div>
 
+      <ProgressBar expense={expenseAmount} budget={budgetAmount} />
 
-        <ProgressBar expense={expenseAmount} budget={budgetAmount}/>
-
-
-        {expenses && (
+      <div className="expenses-list">
+        <h3>Latest expenses</h3>
+        {expenses.length === 0 && <p className="my-1">There are no expenses this month.</p>}
+        {expenses && expenses.length !== 0 && (
           <>
-            <h3>Latest expenses</h3>
-            <div className="expenses-list">
-              <ul>
-                {expenses.slice(0,5).map((expense) => (
-                  <li key={expense.id}>
-                    <div className="expense-date">{new Date(expense.date).toLocaleDateString("en-US", {
+            <ul>
+              {expenses.slice(0, 5).map((expense) => (
+                <li key={expense.id}>
+                  <span
+                    className="category-indicator"
+                    style={{
+                      backgroundColor: colors[expense.category.name],
+                    }}
+                  ></span>
+                  <div className="expense-date">
+                    {new Date(expense.date).toLocaleDateString("en-US", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "2-digit",
-                    })}</div>
-                
-                    <div className="expense-title-cat">
-                      <div className="expense-title">{expense.title}</div>
-                      <div className="expense-category">{expense.category.name}</div>
-                      </div>
-                      <div className="expense-amount">{Number(expense.amount).toFixed(2) } </div>
-                  </li>
-                ))}
-              </ul>
-              <Link to="/expenses" className="btn-primary btn pos-left">All Expenses</Link>
-            </div>
+                    })}
+                  </div>
+
+                  <div className="expense-title-cat">
+                    <div className="expense-title">{expense.title}</div>
+                    <div className="expense-category">
+                      {expense.category.name}
+                    </div>
+                  </div>
+                  <div className="expense-amount">
+                    {Number(expense.amount).toFixed(2)}{" "}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <Link to="/expenses" className="btn-primary btn align-right">
+              All Expenses
+            </Link>
           </>
         )}
       </div>
 
-     
-    </>
+      <div className="expenses-chart">
+        {expenses && expenses.length !== 0 && (
+          <>
+            <h3>Expenses per category</h3>
+            <DoughnutChart
+              expenses={expenses.slice(0, 5)}
+              colors={colors}
+            />
+          </>
+        )}
+      </div>
+    </div>
   );
 }

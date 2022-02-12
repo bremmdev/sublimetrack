@@ -7,7 +7,7 @@ const ProgressBar = (props) => {
   return (
     <div className="progressbar-container">
       <h3 className="accent">
-        Remaining budget: {props.budget - props.expense.toFixed(2)} / {props.budget.toFixed(2)}
+        Budget left: {(props.budget - props.expense).toFixed(2)} / {props.budget.toFixed(2)}
       </h3>
       <div className="progressbar">
         <div className="progressbar-spent" style={{ width: `${width}%`, borderRadius: width === 100 && '0.5em' }}></div>
