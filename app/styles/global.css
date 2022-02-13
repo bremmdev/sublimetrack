@@ -246,21 +246,26 @@ h4{
     display:none;
   }
   .nav-panel{
+    min-width:50px;
     width:60px;
   }
 
   .logo{
-    width:2rem;
-    height:2rem;
+    width:2.5rem;
+    height:2.5rem;
   }
 
   .nav-icon{
-    font-size:1.5rem;
+    font-size:2.2rem;
   }
 
   .nav-icon:hover{
     cursor:pointer;
     transform:scale(1);
+  }
+
+  .navbar li{
+    margin:1.5em 0;
   }
 
   .active-link .nav-icon{
