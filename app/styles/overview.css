@@ -24,28 +24,36 @@
 .doughnut-container{
   width:90%;
   max-width:400px;
-  margin:0 auto;
-}
-
-@media(max-width:960px){
-  .large-text{
-    font-size:1.5rem;
-  }
+  margin:1em auto;
 }
 
 
-@media(max-width:600px){
-  .large-text{
-    font-size:1.3rem;
-  }
 
-  .summary-card > div {
-    padding:0 0.5em;
-  }
-}
 
 @media(max-width: 1400px){
   .summary-card > div {
     padding:0 1.5em;
   }
 }
+
+@media(max-width:960px){
+  .large-text{
+    font-size:1.5rem;
+  }
+  .doughnut-container{
+    margin:1em;
+  }
+  
+}
+
+@media(max-width:560px){
+  .large-text{
+    font-size:1.3rem;
+  }
+  .summary-card > div {
+    padding:0 0.8em;
+  }
+
+}
+
+

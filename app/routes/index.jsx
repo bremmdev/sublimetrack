@@ -154,7 +154,7 @@ export default function Home() {
       <div className="expenses-chart">
         {expenses && expenses.length !== 0 && (
           <>
-            <h3>Expenses per category</h3>
+            <h3 className="hidden-mobile">Expenses per category</h3>
             <DoughnutChart
               expenses={expenses.slice(0, 5)}
               colors={colors}

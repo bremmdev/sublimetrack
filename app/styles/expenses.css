@@ -34,17 +34,28 @@
 
 .expense-title{
   font-weight: 700;
+  
 }
 
 .expense-date{
   text-align:left;
   flex-basis:20%;
-  
 }
 
 .expense-amount{
   text-align:right;
   flex-basis:20%;
+}
+
+.expenses-chart{
+  display:flex;
+  flex-direction: column;
+}
+
+@media(max-width: 960px){
+  .expenses-chart{
+    align-items:flex-start;
+  }
 }
 
 
@@ -58,5 +69,4 @@
   .expense-title-cat{
     flex-basis:50%;
   }
-
 }

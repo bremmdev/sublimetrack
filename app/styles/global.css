@@ -34,10 +34,12 @@ ul{
 
 .container{
   display:flex;
+  max-width:100vw;
 }
 
 .main-container{
-  flex:1;
+  flex-grow:1;
+  flex-shrink:1;
 }
 
 .grid{

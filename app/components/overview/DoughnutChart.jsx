@@ -6,7 +6,7 @@ ChartJS.register(ArcElement, Legend, Tooltip, Title);
 const options = {
   cutout: "60%",
   plugins: {
-    legend: { labels: { color: "white", padding: 20, font: { size:14} } },
+    legend: { labels: { color: "white", padding: 10, font: { size:13} } },
   },
 };
 
