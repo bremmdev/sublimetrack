@@ -48,8 +48,6 @@
 }
 
 
-
-
 @media(max-width:560px){
   .expense-date{
     flex-basis:25%; 
