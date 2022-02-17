@@ -169,12 +169,28 @@ h4{
   border-radius: 6px;
   font-weight: 700;
   width:fit-content;
+  display: inline-block;
+  outline:none;
+  border:none;
+  cursor:pointer;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .btn-primary{
   background-color: var(--dark-accent-clr);
   color:var(--dark-primary-clr);
   opacity:1;
+}
+
+.btn-secondary{
+  border:1px solid var(--dark-accent-clr);
+}
+
+.btn-secondary:hover{
+  background-color: var(--dark-accent-clr);
+  color:var(--dark-primary-clr);
+  transition: background-color 0.2s ease-in;
 }
 
 .btn-invisible{
@@ -210,6 +226,12 @@ h4{
 
 .py-3{
   padding:3em 0;
+}
+
+.error-message{
+  font-weight:bold;
+  color:#FF5555;
+  margin-left:25%;
 }
 
 

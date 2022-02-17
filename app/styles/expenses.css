@@ -88,7 +88,6 @@
   font-family: inherit;
   transition: border 0.25s ease-in 0s;
   margin-right: 1em;
-  opacity: 0.7;
   color:white;
   background-color:#0E0F2E;
   max-width:200px;
@@ -102,6 +101,65 @@
 .search-field::placeholder{
   font-weight: 700;
 }
+
+/* Add expense form */
+
+.form-wrapper{
+  width:100%;
+  border:1px solid #999;
+  padding:2em 2em;
+  border-radius:5px;
+  margin:1em 0;
+}
+
+.form{
+  margin:0 auto;
+  max-width:500px;
+}
+
+.form-control{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin:1em 0;
+}
+
+.form-buttons{
+  display:flex;
+  gap:1em;
+  justify-content: center;
+  margin-top:2em;
+}
+
+.form input,
+.form select{
+  color:inherit;
+  font-size:inherit;
+  border:0;
+  background-color: #0E0F2E;
+  outline:none;
+  border-bottom:2px solid #AAA;
+  padding: 0.7em 1em;
+  flex-basis:75%;
+}
+
+.form select{
+  border:none;
+}
+
+.form input:focus{
+  border-bottom:2px solid #00CCFF;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.form-control label{
+  flex-basis:25%;
+  font-weight: 700;
+}
+
 
 
 @media(max-width: 960px){
@@ -147,6 +205,11 @@
   }
   .search-field{
     max-width: 120px;
+  }
+
+  .form-wrapper{
+   padding:1.5em;
+    margin:1em 0;
   }
 
 }
