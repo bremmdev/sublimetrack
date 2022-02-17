@@ -117,6 +117,10 @@
   max-width:500px;
 }
 
+.form-search{
+  display:inline-block;
+}
+
 .form-control{
   display:flex;
   justify-content: center;
@@ -212,4 +216,9 @@
     margin:1em 0;
   }
 
+  .form-control{
+    gap:0em;
+  }
+
+ 
 }
