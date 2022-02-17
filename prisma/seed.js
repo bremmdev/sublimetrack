@@ -2,10 +2,10 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function seed() {
- // createCategories()
- // createUsers()
- //createBudgets()
- //createExpenses()
+ createCategories()
+// createUsers()
+  createBudgets()
+ createExpenses()
 }
 
 seed()
@@ -35,7 +35,7 @@ async function createUsers() {
 
 async function createCategories() {
   await prisma.category.createMany({
-    data: [ { name: 'housing' }, { name: 'utilities' }, { name: 'food' }, { name: 'transportation' }, { name: 'insurance' }, { name: 'recreation' } ]
+    data: [ { name: 'housing' }, { name: 'utilities' }, { name: 'food' }, { name: 'transportation' }, { name: 'insurance' }, { name: 'recreation' }, { name: 'medical costs'}, { name: 'investing'}, { name: 'miscellaneous '}, { name: 'memberships'}, {name: 'pets'} ]
   });
 }
 

@@ -71,8 +71,10 @@ export default function Home() {
       new Date(startOfMonth).toLocaleDateString()
   );
 
+  console.log(currBudget)
+
   //calculate expenses and balance
-  const budgetAmount = +currBudget.amount || 0;
+  const budgetAmount = +currBudget?.amount || 0;
   const expenseAmount =
     Math.abs(expenses?.reduce((prev, exp) => prev + +exp.amount, 0)) || 0;
   const balanceAmount = budgetAmount - expenseAmount;
