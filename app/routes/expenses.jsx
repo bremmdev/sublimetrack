@@ -1,48 +1,20 @@
-import { useLoaderData, Form, redirect, Link, Outlet } from "remix"
+import { useLoaderData, Form, redirect, Link, Outlet, useSearchParams, useLocation} from "remix"
 import { db } from "~/utils/db.server";
 import expenseStyles from '~/styles/expenses.css'
 import { FiTrash2 } from 'react-icons/fi'
-
+import { getUser } from '~/utils/getUser'
+import { getExpenses} from '~/utils/getExpenses'
+import { useEffect, useRef } from 'react'
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }];
 
 export const loader = async ({ request })  => {
   const url = new URL(request.url);
   const query = new URLSearchParams(url.search).get("query");
-  console.log(query);
 
-  const user = await db.user.findUnique({
-    where: {
-      id: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3",
-    },
-  });
+  const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
 
-  let expenses
-
-  if (query) {
-    expenses = await db.expense.findMany({
-      where: {
-        userId: user.id,
-        title: {
-          search: query + ':*',
-        },
-      },
-      orderBy: { date: "desc" },
-      include: {
-        category: true,
-      },
-    });
-  } else {
-    expenses = await db.expense.findMany({
-      where: {
-        userId: user.id,
-      },
-      orderBy: { date: "desc" },
-      include: {
-        category: true,
-      },
-    });
-  }
+  const expenses = await getExpenses(user.id, query)
 
   const data = { user, expenses };
 
@@ -67,27 +39,51 @@ export const action = async ({request, params}) => {
 
 const Expenses = () => {
 
-  const { user, expenses } = useLoaderData()
+  const [params] = useSearchParams()
+  const location = useLocation()
+  const searchInputRef = useRef(null)
+  const searchSubmitRef = useRef(null)
+  const { user, expenses } = useLoaderData();
 
+  useEffect(() => {
+    //clear search input when we add an expense
+    if(location.pathname === '/expenses/new') {
+      searchInputRef.current.value = ''
+    }
+  }, [location])
 
- 
+  const activateSearch = () => {
+    searchSubmitRef.current.click()
+  }
+
   return (
     <div className="expenses-list container-constrained-center">
       <div className="expenses-list-header">
         <h2>All expenses</h2>
         <div>
-        <Form className="form-search" method="GET"> <input type="text" name="query" className="search-field" placeholder="Search..."/></Form>
-       
-     
-        
+          <Form className="form-search" method="GET">
+            <input
+              type="text"
+              name="query"
+              className="search-field"
+              placeholder="Search..."
+              defaultValue={params.get('query') || ''}
+              ref={searchInputRef}
+              onChange={activateSearch}
+            />
+            <button type="submit" ref={searchSubmitRef} className="btn-invisible"></button>
+          </Form>
+
           <Link to="/expenses/new" className="btn-primary btn">
             Add Expense
           </Link>
         </div>
       </div>
-      <Outlet/>
+      <Outlet />
 
-      {expenses && expenses.length === 0 && <p className="my-1">There are no expenses.</p>}
+      {expenses && expenses.length === 0 && (
+        <p className="my-1">There are no expenses.</p>
+      )}
       {expenses.length !== 0 && (
         <>
           <ul>
@@ -124,6 +120,6 @@ const Expenses = () => {
       )}
     </div>
   );
-}
+};
 
 export default Expenses
