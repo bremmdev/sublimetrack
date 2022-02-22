@@ -2,9 +2,9 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function seed() {
- createCategories()
+ //createCategories()
 // createUsers()
-  createBudgets()
+ // createBudgets()
  createExpenses()
 }
 

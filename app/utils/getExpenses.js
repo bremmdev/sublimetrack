@@ -1,6 +1,6 @@
 import { db } from "~/utils/db.server";
 
-export const getExpenses = async (id, query = null) => {
+export const getExpenses = async (id, query = null, page) => {
 
   let filter = {
     userId: id,
@@ -8,7 +8,17 @@ export const getExpenses = async (id, query = null) => {
       search: query + ':*'
     } : {}
   }
-   const expenses = await db.expense.findMany({
+
+  let count
+
+  if(page === 1){
+    count = await db.expense.count({
+      where: { userId: id }
+    })
+  }
+  console.log(query)
+
+  const expenses = await db.expense.findMany({
       where: filter,
       orderBy: { date: "desc" },
       include: {
@@ -16,6 +26,6 @@ export const getExpenses = async (id, query = null) => {
       },
     });
   
-  return expenses
+  return { expenses, count }
 }
 

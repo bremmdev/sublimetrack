@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from "remix"
+import { useLoaderData, Link, useTransition } from "remix"
 import { db } from "~/utils/db.server";
 import expenseStyles from '~/styles/expenses.css'
 import overviewStyles from '~/styles/overview.css'
@@ -63,6 +63,7 @@ export const loader = async ({ request })  => {
 
 export default function Home() {
   const { user, expenses, startOfMonth } = useLoaderData();
+  const transition = useTransition()
 
   //get budget of the current month
   const currBudget = user?.budgets?.find(
@@ -84,6 +85,10 @@ export default function Home() {
     month: "long",
     day: "numeric",
   });
+
+  if(transition.state === 'loading') {
+    return  <div className="spinner spinner-large"></div>
+  }
 
   return (
     <div className="grid">

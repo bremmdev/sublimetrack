@@ -1,5 +1,4 @@
-import { Form, Link, redirect, json } from 'remix'
-import { useLoaderData, useActionData } from 'remix'
+import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition } from 'remix'
 import { db } from '~/utils/db.server.js'
 
 export const loader = async () => {
@@ -45,13 +44,16 @@ export const action = async ({ request }) => {
 }
 
 const AddExpense = () => {
-console.log(new Date().toISOString())
-  const { categories } = useLoaderData()
-  console.log(categories)
 
+  const { categories } = useLoaderData()
   const actionData = useActionData()
-  
-  
+  let transition = useTransition()
+  const isAdding = transition.submission && transition.submission.formData.get("_action") === 'create'
+ 
+  if(transition.state === 'loading') {
+    return  <div className="spinner spinner-large"></div>
+  }
+
   return (
     <div className="form-wrapper">
       <Form method="POST" className="form">
@@ -88,8 +90,8 @@ console.log(new Date().toISOString())
           }
         </div>
         <div className="form-buttons">
-          <button type="submit" className="btn btn-primary">
-            Add
+          <button disabled={isAdding} name="_action" value="create" type="submit" className="btn btn-primary">
+            {isAdding ? <div className="spinner">Adding...</div> : 'Add'}
           </button>
           <Link to="/expenses" className="btn btn-secondary">
             Go Back
