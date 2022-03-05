@@ -60,6 +60,7 @@ export const action = async ({request, params}) => {
 const Expenses = () => {
 
   const data = useLoaderData();
+  console.log(data)
   const [params] = useSearchParams()
  
   const [expenses, setExpenses] = useState([])

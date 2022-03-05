@@ -35,7 +35,7 @@ async function createUsers() {
 
 async function createCategories() {
   await prisma.category.createMany({
-    data: [ { name: 'housing' }, { name: 'utilities' }, { name: 'food' }, { name: 'transportation' }, { name: 'insurance' }, { name: 'recreation' }, { name: 'medical costs'}, { name: 'investing'}, { name: 'miscellaneous '}, { name: 'memberships'}, {name: 'pets'} ]
+    data: [ { name: 'housing', color: '#87CEEB' }, { name: 'utilities', color: '#FF5555' }, { name: 'food', color: '#9986dd' }, { name: 'transportation', color: '#AAAAAA' }, { name: 'insurance', color: '#fbb871' }, { name: 'recreation', color: '#00FF95' }, { name: 'medical costs', color: '#ec6d71'}, { name: 'investing', color: '#b7d6b7'}, { name: 'miscellaneous', color: '#5959ab'}, { name: 'memberships', color: '#FFD8CC'}, {name: 'pets', color: '#f599dc'} ]
   });
 }
 
@@ -51,13 +51,13 @@ async function createBudgets() {
 async function createExpenses() {
   await prisma.expense.createMany({
     data: [ 
-    { title: 'Delta Supermarket', amount: -34.43, date: new Date("2022-03-06"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
-    { title: 'Sushi Paradise', amount: -44.13, date: new Date("2022-03-13"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d3fcd29c-27c2-40b5-a781-9494d057aa6f"},
-    { title: 'Storm Energy', amount: -89.54, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
-    { title: 'Health Insurance Company', amount: -125, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1127ecd8-4172-41aa-9689-6d8d4b8bb057"},
-    { title: 'Water Company', amount: -13, date: new Date("2022-03-15"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
-    { title: 'test', amount: -100.43, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
-    { title: 'Water Company', amount: -13, date: new Date("2022-03-15"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"}, 
+    { title: 'Delta Supermarket', amount: 34.43, date: new Date("2022-03-06"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d05a1cdd-5341-4abd-9a53-e1a012d0dd3d"},
+    { title: 'Sushi Paradise', amount: 44.13, date: new Date("2022-03-13"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d05a1cdd-5341-4abd-9a53-e1a012d0dd3d"},
+    { title: 'Storm Energy', amount: 89.54, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "3fdb010d-547d-451f-856a-0e0d3e207462"},
+    { title: 'Health Insurance Company', amount: 125, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "3fdb010d-547d-451f-856a-0e0d3e207462"},
+    { title: 'Banana Company', amount: 13, date: new Date("2022-03-15"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "8297ef3b-8790-44d8-86de-cf211f31dcfd"},
+    { title: 'test', amount: 100.43, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "2544e726-3c82-42f7-91b9-def5b4b4f444"},
+    { title: 'Lol Company', amount: 13, date: new Date("2022-03-15"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "2cd7d5d9-be84-472d-ae2d-19b79b9b22fb"}, 
   ]
   });
 }

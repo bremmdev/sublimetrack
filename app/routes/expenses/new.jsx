@@ -18,7 +18,7 @@ const validateForm = (title, amount, date) => {
 export const action = async ({ request }) => {
   const formData = await request.formData()
   const title = formData.get('title')
-  const amount = +formData.get('amount')
+  const amount = Math.abs(+formData.get('amount'))
   const date = formData.get('date')
   //this gets the categoryId based on the category chosen in select
   const category = formData.get('category')

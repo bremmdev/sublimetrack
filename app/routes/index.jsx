@@ -8,14 +8,6 @@ import DoughnutChart from "~/components/overview/DoughnutChart.jsx";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
 
-const colors = {
-  utilities: '#FF5555',
-  recreation: '#00FF95',
-  insurance: 'skyblue',
-  food: '#EEE'
-}
-
-
 export const loader = async ({ request })  => {
   const currDate = new Date()
   const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
@@ -28,13 +20,7 @@ export const loader = async ({ request })  => {
     include: {
       budgets: true
     }
-      
   })
-
-
-  console.log(user)
-
- console.log(endOfMonth)
 
   const expenses = await db.expense.findMany({
       where: {
@@ -48,10 +34,9 @@ export const loader = async ({ request })  => {
       include: {
         category: true
       }, 
-    
     })
 
-     const data ={user, expenses, startOfMonth}
+     const data ={user, expenses,startOfMonth}
     
   return data;
 };
@@ -70,12 +55,9 @@ export default function Home() {
       new Date(startOfMonth).toLocaleDateString()
   );
 
-  console.log(currBudget)
-
   //calculate expenses and balance
   const budgetAmount = +currBudget?.amount || 0;
-  const expenseAmount =
-    Math.abs(expenses?.reduce((prev, exp) => prev + +exp.amount, 0)) || 0;
+  const expenseAmount = expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
   const balanceAmount = budgetAmount - expenseAmount;
 
   const currDate = new Date().toLocaleDateString("en-US", {
@@ -126,7 +108,7 @@ export default function Home() {
                   <span
                     className="category-indicator"
                     style={{
-                      backgroundColor: colors[expense.category.name],
+                      backgroundColor: expense.category.color,
                     }}
                   ></span>
                   <div className="expense-date">
@@ -144,7 +126,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="expense-amount">
-                    {Number(expense.amount).toFixed(2)}{" "}
+                    {Number(expense.amount).toFixed(2)}
                   </div>
                 </li>
               ))}
@@ -156,17 +138,19 @@ export default function Home() {
         )}
       </div>
 
+      
       <div className="expenses-chart">
         {expenses && expenses.length !== 0 && (
           <>
             <h3 className="hidden-mobile">Expenses per category</h3>
             <DoughnutChart
-              expenses={expenses.slice(0, 5)}
-              colors={colors}
+              expenses={expenses}
             />
           </>
         )}
       </div>
+
+
     </div>
   );
 }

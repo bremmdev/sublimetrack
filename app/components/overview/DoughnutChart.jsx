@@ -10,12 +10,14 @@ const options = {
   },
 };
 
-const DoughnutChart = ( { expenses, colors }) => {
+const DoughnutChart = ( { expenses }) => {
 
   //get data from expenses
   let categories = [...new Set(expenses.map(expense => expense.category.name))]
-  let categoryColors = categories.map(cat => colors[cat])
-  console.log(categoryColors)
+  let colors = [...new Set(expenses.map(expense => expense.category.color))]
+
+console.log(categories, colors)
+
   let expensesPerCategory = categories.map(cat => expenses.filter(exp => exp.category.name === cat))
 
   let expenseAmountPerCat = []
@@ -30,8 +32,8 @@ const data = {
     {
       label: "Expenses per category",
       data: expenseAmountPerCat,
-      backgroundColor: categoryColors,
-      borderColor: categoryColors 
+      backgroundColor: colors,
+      borderColor: colors 
     },
   ],
   
@@ -41,6 +43,7 @@ const data = {
     <div className="doughnut-container">
       <Doughnut data={data} options={options}></Doughnut>
     </div>
+    
   );
 }
 

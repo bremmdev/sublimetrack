@@ -11,6 +11,12 @@ const ExpenseItem = ( { expense}) => {
   return (
     <>
     <li hidden={isDeleting}>
+    <span
+                    className="category-indicator"
+                    style={{
+                      backgroundColor: expense.category.color,
+                    }}
+                  ></span>
     <div className="expense-date">
       {new Date(expense.date).toLocaleDateString("en-US", {
         day: "2-digit",
