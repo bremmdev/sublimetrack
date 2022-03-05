@@ -1,13 +1,16 @@
 import { useFetcher} from 'remix'
 import { FiTrash2 } from 'react-icons/fi'
 
-const ExpenseItem = ( { expense }) => {
+
+const ExpenseItem = ( { expense}) => {
 
   const fetcher = useFetcher()
-  let isDeleting = fetcher.submission?.formData.get('expense_id') === expense.id
+  let isDeleting = fetcher.submission && fetcher.submission.formData.get('expense_id') === expense.id
+  const isFailedDeletion = fetcher.data?.error 
 
   return (
-    <li style={{opacity: isDeleting ? 0.25 : 1 }}>
+    <>
+    <li hidden={isDeleting}>
     <div className="expense-date">
       {new Date(expense.date).toLocaleDateString("en-US", {
         day: "2-digit",
@@ -33,6 +36,8 @@ const ExpenseItem = ( { expense }) => {
       </button>
     </fetcher.Form>
   </li>
+  {isFailedDeletion && <div style={{marginBottom: '1em'}} className="error-message">Deleting failed, please try again</div>}
+  </>
   )
 }
 

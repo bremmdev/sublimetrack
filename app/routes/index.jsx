@@ -17,11 +17,9 @@ const colors = {
 
 
 export const loader = async ({ request })  => {
-
   const currDate = new Date()
   const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
   const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0);
-
 
   const user = await db.user.findUnique({
     where:{

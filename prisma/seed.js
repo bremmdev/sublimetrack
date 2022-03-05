@@ -51,13 +51,13 @@ async function createBudgets() {
 async function createExpenses() {
   await prisma.expense.createMany({
     data: [ 
-    { title: 'Delta Supermarket', amount: -34.43, date: new Date("2022-02-06"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
-    { title: 'Sushi Paradise', amount: -44.13, date: new Date("2022-02-13"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d3fcd29c-27c2-40b5-a781-9494d057aa6f"},
-    { title: 'Storm Energy', amount: -89.54, date: new Date("2022-02-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
-    { title: 'Health Insurance Company', amount: -125, date: new Date("2022-02-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1127ecd8-4172-41aa-9689-6d8d4b8bb057"},
-    { title: 'Water Company', amount: -13, date: new Date("2022-02-15"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
-    { title: 'test', amount: -100.43, date: new Date("2022-02-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
-    { title: 'Water Company', amount: -13, date: new Date("2022-02-15"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"}, 
+    { title: 'Delta Supermarket', amount: -34.43, date: new Date("2022-03-06"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
+    { title: 'Sushi Paradise', amount: -44.13, date: new Date("2022-03-13"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d3fcd29c-27c2-40b5-a781-9494d057aa6f"},
+    { title: 'Storm Energy', amount: -89.54, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
+    { title: 'Health Insurance Company', amount: -125, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1127ecd8-4172-41aa-9689-6d8d4b8bb057"},
+    { title: 'Water Company', amount: -13, date: new Date("2022-03-15"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"},
+    { title: 'test', amount: -100.43, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "14ebbabc-146f-4b49-afda-1e06c38aca14"},
+    { title: 'Water Company', amount: -13, date: new Date("2022-03-15"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "1c7ead9d-4273-4593-bbfe-6e96fb124dd7"}, 
   ]
   });
 }
