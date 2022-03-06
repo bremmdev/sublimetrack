@@ -158,6 +158,7 @@ const Expenses = () => {
                 ref={dateInputRef}
                 type="date"
                 name="from"
+                placeholder="From date"
                 onChange={submitDateSelect}
                 disabled={location.pathname === "/expenses/new"}
                 defaultValue={params.get("from") || ""}

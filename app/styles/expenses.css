@@ -104,7 +104,7 @@
   transition: border 0.25s ease-in 0s;
   color:white;
   background-color:#0E0F2E;
- width:180px;
+  width:180px;
 }
 
 .search-field:disabled,
@@ -169,7 +169,7 @@
   outline:none;
   border-bottom:2px solid #AAA;
   padding: 0.7em 1em;
-  flex-basis:75%;
+  flex-basis: 75%;
 }
 
 .form select{
@@ -187,6 +187,7 @@
 .form-control label{
   flex-basis:25%;
   font-weight: 700;
+  
 }
 
 
@@ -228,13 +229,16 @@
 
 
   .form-wrapper{
-   padding:1.5em;
+   padding:1em;
     margin:1em 0;
   }
 
-  .form-control{
-    gap:0em;
+  .datepicker::before{
+    content: attr(placeholder);
+    margin-right:0.5em;
   }
+  
+
 
   .filter-controls{
     margin-top:1em;
