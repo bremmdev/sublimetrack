@@ -1,15 +1,12 @@
 import { db } from "~/utils/db.server";
 
-export const getExpenses = async (userId, query = null, startDate) => {
+export const getExpenses = async (userId, startDate) => {
 
   let filter = {
     userId,
     date: {
       gte: startDate
-    },
-    title: query ? {
-      search: query + ':*'
-    } : {}
+    }
   }
 
   let count = await db.expense.count({

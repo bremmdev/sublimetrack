@@ -6,7 +6,7 @@ ChartJS.register(ArcElement, Legend, Tooltip, Title);
 const options = {
   cutout: "60%",
   plugins: {
-    legend: { labels: { color: "white", padding: 10, font: { size:13} } },
+    legend: { labels: { color: "white", padding: 8, boxWidth: 10,  usePointStyle: true, font: { size:13} } },
   },
 };
 
@@ -15,8 +15,6 @@ const DoughnutChart = ( { expenses }) => {
   //get data from expenses
   let categories = [...new Set(expenses.map(expense => expense.category.name))]
   let colors = [...new Set(expenses.map(expense => expense.category.color))]
-
-console.log(categories, colors)
 
   let expensesPerCategory = categories.map(cat => expenses.filter(exp => exp.category.name === cat))
 
