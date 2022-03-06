@@ -235,6 +235,7 @@
 
   .datepicker::before{
     content: attr(placeholder);
+    display:inline-block;
     margin-right:0.5em;
   }
   
