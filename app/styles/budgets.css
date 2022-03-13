@@ -1,0 +1,57 @@
+.budgets-list{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+.budgets-list-header{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom:2em;
+}
+
+.budgets-list li{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap:1em;
+  border-top:1px solid white;
+  font-weight:700;
+}
+
+
+
+.budgets-list li.active > div{
+ color: var(--dark-accent-clr);
+}
+
+.budgets-list li:first-child{
+  border-top:none;
+}
+
+.budgets-list li > div {
+  margin:1em 0;
+}
+
+.budget-date{
+  flex-basis:80%;
+}
+
+.budget-amount{
+  text-align:right;
+  flex-basis:20%;
+}
+
+.edit-budget-icon{
+  color:#FF5555;
+  font-size:1.3rem;
+  position:relative;
+  left:1em;
+  transform:scale(1);
+  width:1em;
+}
+
+.edit-budget-icon:hover {
+  transform:scale(1.15);
+  transition: transform 0.3s;
+}

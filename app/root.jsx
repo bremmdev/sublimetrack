@@ -79,13 +79,13 @@ function Layout({ children }) {
             <li>
               
               <NavLink
-                to="/budget"
+                to="/budgets"
                 className={({ isActive }) =>
                   isActive ? "active-link" : null
                 }
               >
                 <IoWalletOutline className="nav-icon" />
-                <span className="hidden-mobile">Budget</span>
+                <span className="hidden-mobile">Budgets</span>
               </NavLink>
             </li>
             <li>

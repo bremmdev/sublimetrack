@@ -36,7 +36,12 @@ export const loader = async ({ request })  => {
       }, 
     })
 
-     const data ={user, expenses,startOfMonth}
+    const currentBudget = user.budgets.find(
+      (budget) =>
+        currDate >= new Date(budget.startDate) && (currDate < (new Date(budget.endDate || '9999-01-01')))
+    );
+
+     const data ={user, expenses,currentBudget}
     
   return data;
 };
@@ -45,22 +50,15 @@ export const loader = async ({ request })  => {
 
 
 export default function Home() {
-  const { user, expenses, startOfMonth } = useLoaderData();
+  const { user, expenses, currentBudget } = useLoaderData();
   const transition = useTransition()
 
-  //get budget of the current month
-  const currBudget = user?.budgets?.find(
-    (budget) =>
-      new Date(budget.startDate).toLocaleDateString() ===
-      new Date(startOfMonth).toLocaleDateString()
-  );
-
   //calculate expenses and balance
-  const budgetAmount = +currBudget?.amount || 0;
+  const budgetAmount = +currentBudget?.amount || 0;
   const expenseAmount = expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
   const balanceAmount = budgetAmount - expenseAmount;
 
-  const currDate = new Date().toLocaleDateString("en-US", {
+  const currDateStr = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -77,7 +75,7 @@ export default function Home() {
           Hi, <span className="accent">{user.firstName}!</span>
         </h2>
         <p className="date-message">
-          Today is <span className="accent">{currDate}</span>
+          Today is <span className="accent">{currDateStr}</span>
         </p>
       </div>
       <div className="summary-card">

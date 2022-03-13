@@ -5,6 +5,9 @@ export const getUser = async (id) => {
     where: {
       id
     },
+    include: {
+      budgets: true,
+    }
   });
 }
 
