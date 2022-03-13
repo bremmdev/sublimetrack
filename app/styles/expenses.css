@@ -1,193 +1,174 @@
-.expenses-list{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-}
-
-.expenses-list-header{
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
+.expenses-list {
+  position: relative;
+  display: flex;
   flex-direction: column;
-  gap:1em;
-  margin-bottom:2em;
 }
 
-.expenses-list-header-inner{
-  display:flex;
+.expenses-list-header {
+  display: flex;
   justify-content: space-between;
-  align-items:center;
-  gap:1em;
-  width:100%;
-  
+  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 2em;
 }
 
-.filter-controls{
+.expenses-list-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+}
+
+.filter-controls {
   justify-content: end;
 }
 
-
-.expenses-list li{
-  display:flex;
+.expenses-list li {
+  display: flex;
   justify-content: space-evenly;
-  align-items:center;
-  border-top:1px solid white;
+  align-items: center;
+  border-top: 1px solid white;
 }
 
-.category-indicator{
-  position:relative;
-  left:-0.75em;
-  height:1rem;
-  width:1rem;
-  border-radius:50%;
-  margin:0;
+.category-indicator {
+  position: relative;
+  left: -0.75em;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  margin: 0;
 }
 
-.expenses-list li:first-child{
-  border-top:none;
+.expenses-list li:first-child {
+  border-top: none;
 }
 
 .expenses-list li > div {
-  margin:1em 0;
+  margin: 1em 0;
 }
 
-.expense-title-cat{
-  flex-basis:60%;
+.expense-title-cat {
+  flex-basis: 60%;
 }
 
-.expense-title{
+.expense-title {
   font-weight: 700;
-  
 }
 
-.expense-date{
-  text-align:left;
-  flex-basis:20%;
+.expense-date {
+  text-align: left;
+  flex-basis: 20%;
 }
 
-.expense-amount{
-  text-align:right;
-  flex-basis:20%;
+.expense-amount {
+  text-align: right;
+  flex-basis: 20%;
 }
 
-.expenses-chart{
-  display:flex;
+.expenses-chart {
+  display: flex;
   flex-direction: column;
 }
 
-.delete-exp-icon{
-  color:#FF5555;
-  font-size:1.5rem;
-  position:relative;
-  left:1em;
-  transform:scale(1);
+.delete-exp-icon {
+  color: #ff5555;
+  margin-left:0.85em;
+  font-size: 1.5rem;
+  transform: scale(1);
 }
 
-.delete-exp-icon:hover{
-  transform:scale(1.15);
+.delete-exp-icon:hover {
+  transform: scale(1.15);
   transition: transform 0.3s;
 }
 
 .search-field,
 .datepicker,
-.filter-category{
-  display:inline-block;
+.filter-category {
+  display: inline-block;
   padding: 0.7em 1em;
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom:2px solid #AAA;
+  border-bottom: 2px solid #aaa;
   outline: none;
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
   transition: border 0.25s ease-in 0s;
-  color:white;
-  background-color:#0E0F2E;
-  width:180px;
+  color: white;
+  background-color: #0e0f2e;
+  width: 180px;
 }
 
 .search-field:disabled,
 .datepicker:disabled,
-.filter-category:disabled{
- opacity:0.3;
+.filter-category:disabled {
+  opacity: 0.3;
 }
 
 .search-field:focus,
-.datepicker:focus{
-  border-bottom:2px solid #00CCFF;
+.datepicker:focus {
+  border-bottom: 2px solid #00ccff;
 }
 
-.datepicker-label span{
-  font-weight:700;
-  margin-right:1em;
+.datepicker-label span {
+  font-weight: 700;
+  margin-right: 1em;
 }
 
-.search-field::placeholder{
+.search-field::placeholder {
   font-weight: 700;
 }
 
-
-
-
-
-@media(max-width: 960px){
-  .expenses-chart{
-    align-items:flex-start;
+@media (max-width: 960px) {
+  .expenses-chart {
+    align-items: flex-start;
   }
-  .delete-exp-icon{
-    left:0.5em;
+  .delete-exp-icon {
+    left: 0.5em;
   }
 }
 
-
-@media(max-width: 700px){
+@media (max-width: 700px) {
   .expenses-list-header-inner {
-    gap:0.5em;
+    gap: 0.5em;
   }
 
   .filter-controls > * {
-    width:100%;
+    width: 100%;
   }
- 
-
-
 }
 
-
-@media(max-width:560px){
-  .expense-date{
-    flex-basis:25%; 
+@media (max-width: 560px) {
+  .expense-date {
+    flex-basis: 25%;
   }
-  .expense-amount{
-    flex-basis:25%;
+  .expense-amount {
+    flex-basis: 25%;
   }
-  .expense-title-cat{
-    flex-basis:50%;
+  .expense-title-cat {
+    flex-basis: 50%;
   }
 
-
-
-  .datepicker::before{
+  .datepicker::before {
     content: attr(placeholder);
-    display:inline-block;
-    margin-right:0.5em;
+    display: inline-block;
+    margin-right: 0.5em;
   }
-  
 
-
-  .filter-controls{
-    margin-top:1em;
+  .filter-controls {
+    margin-top: 1em;
     flex-direction: column;
-    gap:1em;
+    gap: 1em;
   }
 
   .search-field,
-.datepicker,
-.filter-category{
-  flex-basis:100%;
-  width:100%;
-}
-
- 
+  .datepicker,
+  .filter-category {
+    flex-basis: 100%;
+    width: 100%;
+  }
 }
