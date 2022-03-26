@@ -1,4 +1,4 @@
-import { useLoaderData, Form, Link, Outlet, useSearchParams, useLocation, useTransition} from "remix";
+import { useLoaderData, Form, Link, Outlet, useSearchParams, useLocation, useTransition, Meta} from "remix";
 import { db } from "~/utils/db.server";
 import expenseStyles from "~/styles/expenses.css";
 import formStyles from "~/styles/forms.css";
@@ -9,6 +9,10 @@ import ExpenseItem from "~/components/expenses/ExpenseItem";
 import Fuse from "fuse.js";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: formStyles, rel: 'stylesheet'}];
+
+export const meta = () => ({
+  title: "Sublimetrack - Expenses"
+});
 
 export const loader = async ({ request, params }) => {
   const url = new URL(request.url);

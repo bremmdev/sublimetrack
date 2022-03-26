@@ -1,4 +1,4 @@
-import { useLoaderData, useTransition, Link, Outlet } from "remix"
+import { useLoaderData, useTransition, Link, Outlet, Meta } from "remix"
 import { getUser } from "~/utils/getUser.js"
 import { db } from "~/utils/db.server";
 import budgetStyles from "~/styles/budgets.css";
@@ -7,6 +7,10 @@ import BudgetItem from "~/components/budgets/BudgetItem";
 import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser'
 
 export const links = () => [{ href: budgetStyles, rel: "stylesheet" }, { href: formStyles, rel: 'stylesheet'}];
+
+export const meta = () => ({
+  title: "Sublimetrack - Budgets"
+});
 
 export const loader = async ({ request }) => {
  

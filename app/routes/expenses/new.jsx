@@ -59,13 +59,13 @@ const AddExpense = () => {
       <Form method="POST" className="form">
         <div className="form-control">
           <label htmlFor="title">Title</label>
-          <input type="text" name="title" />
+          <input type="text" name="title" defaultValue={actionData?.fields?.title} />
           
         </div>
         {actionData?.fieldErrors?.titleError && <p className='error-message'>{actionData.fieldErrors.titleError}</p>}
         <div className="form-control">
           <label htmlFor="amount">Amount</label>
-          <input type="number" name="amount" defaultValue='0.00' step='0.01'/>
+          <input type="number" name="amount" step='0.01' defaultValue={actionData?.fields?.amount || '0.00'}/>
           
         </div>
         {actionData?.fieldErrors?.amountError && <p className='error-message'>{actionData.fieldErrors.amountError}</p>}
@@ -74,7 +74,7 @@ const AddExpense = () => {
           <input
             type="date"
             name="date"
-            defaultValue={new Date().toISOString().split("T")[0]}
+            defaultValue={actionData?.fields?.date.split('T')[0]}
           />
         </div>
         {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>}
@@ -82,7 +82,7 @@ const AddExpense = () => {
         <div className="form-control">
           <label htmlFor="category">Category</label>
           {
-            <select name="category">
+            <select name="category" defaultValue={actionData?.fields?.category}>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}

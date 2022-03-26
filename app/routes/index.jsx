@@ -1,4 +1,4 @@
-import { useLoaderData, Link, useTransition } from "remix"
+import { useLoaderData, Link, useTransition, Meta } from "remix"
 import { db } from "~/utils/db.server";
 import expenseStyles from '~/styles/expenses.css'
 import overviewStyles from '~/styles/overview.css'
@@ -7,6 +7,10 @@ import ProgressBar from "~/components/overview/progressBar.jsx";
 import DoughnutChart from "~/components/overview/DoughnutChart.jsx";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
+
+export const meta = () => ({
+  title: "Sublimetrack - Overview"
+});
 
 export const loader = async ({ request })  => {
   const currDate = new Date()
@@ -140,7 +144,6 @@ export default function Home() {
       <div className="expenses-chart">
         {expenses && expenses.length !== 0 && (
           <>
-            <h3 className="hidden-mobile">Expenses per category</h3>
             <DoughnutChart
               expenses={expenses}
             />

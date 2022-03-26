@@ -19,7 +19,7 @@ const validateForm = (amount, date) => {
   const validations = {
     dateError,
     amountError:
-      typeof amount !== "number" || amount > 999999.99 || amount < 0
+      !amount || typeof amount !== "number" || amount > 999999.99 || amount < 0
         ? "Amount must be between 0 and 1 million"
         : null,
   };
@@ -87,9 +87,11 @@ export const action = async ({ request }) => {
 
 const AddBudget = () => {
 
-
+  
   let transition = useTransition()
   const actionData = useActionData()
+
+  console.log(actionData?.fields?.startDate)
  
   if(transition.state === 'loading') {
     return  <div className="spinner spinner-large"></div>
@@ -101,13 +103,13 @@ const AddBudget = () => {
       <Form method="POST" className="form">
       <div className="form-control">
           <label htmlFor="start-date">Start date</label>
-          <input type="date" name="start-date" />
-          
+          <input type="date" name="start-date" defaultValue={actionData?.fields?.startDate.split('T')[0]}/>
+
         </div>
         {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>}
         <div className="form-control">
           <label htmlFor="amount">Amount</label>
-          <input type="number" name="amount" defaultValue='0.00' step='0.01'/>
+          <input type="number" name="amount" defaultValue={actionData?.fields?.amount || '0.00'} step='0.01'/>
         </div>
         {actionData?.fieldErrors?.amountError && <p className='error-message'>{actionData.fieldErrors.amountError}</p>}
         {actionData?.formError && <p className='error-message'>{actionData.formError}</p>}

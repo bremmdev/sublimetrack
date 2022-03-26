@@ -6,7 +6,16 @@ ChartJS.register(ArcElement, Legend, Tooltip, Title);
 const options = {
   cutout: "60%",
   plugins: {
-    legend: { labels: { color: "white", padding: 8, boxWidth: 10,  usePointStyle: true, font: { size:13} } },
+    legend: { labels: { color: "white", padding: 8, boxWidth: 10, usePointStyle: true, font: { size:13} } },
+    title: {
+      display: true,
+      text: 'Expenses per category',
+      color: 'white',
+      font: {
+        size:18
+      }
+    }
+   
   },
 };
 
