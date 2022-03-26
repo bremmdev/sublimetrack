@@ -1,3 +1,10 @@
+.insights-header{
+  display:flex;
+  align-items:center;
+  gap:2em;
+}
+
+
 .stats-container{
   margin-top:2em;
   color: var(--dark-primary-clr);
@@ -41,9 +48,64 @@
 }
 
 
+.year-selector,
+.year-selector-prev,
+.year-selector-next {
+  display: inline-block;
+  padding: 0.5em;
+  border:1px solid #aaa;
+  outline: none;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border 0.25s ease-in 0s;
+  color: white;
+  background-color: #0e0f2e;
+  width: 100px;
+  text-align:center;
+  font-weight: bold;
+}
+
+.year-selector {
+  border-left:none;
+  border-right:none;
+}
+
+.year-selector-prev,
+.year-selector-next {
+  width:3em;
+}
+
+.year-selector-prev:hover,
+.year-selector-next:hover {
+  background-color: var(--dark-accent-clr);
+  transition: background-color 0.2s ease-in-out;
+  color:var(--dark-primary-clr);
+  border: 1px solid var(--dark-accent-clr);
+  
+}
+
+
+.year-selector-prev{
+  border-radius: 6px 0 0 6px;
+}
+
+.year-selector-next{
+  border-radius: 0 6px 6px 0;
+}
+
 
 
 @media(max-width: 560px){
+  .insights-header{
+    justify-content: space-between;
+    gap:1em;
+  }
+
+  .year-selector{
+    width:80px;
+  }
+
+
   .stats-container{
    flex-direction: column;
    gap:1em;
