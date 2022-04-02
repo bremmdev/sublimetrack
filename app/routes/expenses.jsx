@@ -29,13 +29,17 @@ export const loader = async ({ request, params }) => {
   const categories = await db.category.findMany();
   const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3");
   
-  //get expenses for specific user
-  const { expenses, count } = await getExpenses(
-    user.id,
-    startDate || today_minus_30
-  );
+  const filter = {
+    userId: user.id,
+    date: {
+      gte: startDate || today_minus_30
+    }
+  }
 
-  const data = { user, expenses, categories, count };
+  //get expenses for specific user
+  const expenses = await getExpenses(filter)
+
+  const data = { user, expenses, categories };
   return data;
 };
 

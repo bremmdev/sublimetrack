@@ -5,6 +5,9 @@ import overviewStyles from '~/styles/overview.css'
 import progressBarStyles from '~/styles/progressBar.css'
 import ProgressBar from "~/components/overview/progressBar.jsx";
 import DoughnutChart from "~/components/overview/DoughnutChart.jsx";
+import { getUser } from "~/utils/getUser.js";
+import { getExpenses } from "~/utils/getExpenses.js";
+import { getCurrentBudgetForUser } from "~/utils/getCurrentBudgetForUser.js";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
 
@@ -17,44 +20,27 @@ export const loader = async ({ request })  => {
   const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
   const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0);
 
-  const user = await db.user.findUnique({
-    where:{
-      id: '70e0cff2-7589-4de8-9f2f-4e372a5a15f3'
-    },
-    include: {
-      budgets: true
+  const user = await getUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
+ 
+  const filter = { 
+      userId: user.id,
+      date: {
+        gte: startOfMonth,
+        lte: endOfMonth
+      }
     }
-  })
 
-  const expenses = await db.expense.findMany({
-      where: {
-        userId: user.id,
-        date: {
-          gte: startOfMonth,
-          lte: endOfMonth
-        }
-      },
-      orderBy: { date: "desc" },
-      include: {
-        category: true
-      }, 
-    })
-
-    const currentBudget = user.budgets.find(
-      (budget) =>
-        currDate >= new Date(budget.startDate) && (currDate < (new Date(budget.endDate || '9999-01-01')))
-    );
-
-     const data ={user, expenses,currentBudget}
+    const expenses = await getExpenses(filter)
+    const currentBudget = await getCurrentBudgetForUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
+    const data ={user, expenses,currentBudget}
     
-  return data;
+    return data;
 };
-
-
 
 
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
+  console.log('app', user)
   const transition = useTransition()
 
   //calculate expenses and balance

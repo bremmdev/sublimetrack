@@ -93,18 +93,15 @@
   border-radius: 0 6px 6px 0;
 }
 
-
-
 @media(max-width: 560px){
   .insights-header{
     justify-content: space-between;
-    gap:1em;
+    gap:0em;
   }
 
   .year-selector{
     width:80px;
   }
-
 
   .stats-container{
    flex-direction: column;

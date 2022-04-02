@@ -1,9 +1,11 @@
-import { useLoaderData, useActionData, useTransition, Form, redirect, useFetcher } from 'remix'
+import { useLoaderData, useTransition, Form } from 'remix'
 import { useRef } from 'react'
 import { db } from "~/utils/db.server";
 import BarChart from '~/components/insights/BarChart'
 import DoughnutChart from '~/components/overview/DoughnutChart.jsx';
 import insightStyles from "~/styles/insights.css";
+import { getUser } from '~/utils/getUser.js';
+import { getExpenses } from '~/utils/getExpenses.js';
 
 export const meta = () => ({
   title: "Sublimetrack - Insights"
@@ -15,21 +17,16 @@ const validateYear = (year) => {
   return Number.isInteger(+year) && year.length === 4
 }
 
-
 export const loader = async ( { request }) => {
- 
   const url = new URL(request.url);
   const year = new URLSearchParams(url.search).get("year");
 
   //get year from URL or take current year
   const selectedYear = year && validateYear(year) ? +year : new Date().getFullYear()
 
-  const user = await db.user.findUnique({
-    where:{
-      id: '70e0cff2-7589-4de8-9f2f-4e372a5a15f3'
-    },
-  })
+  const user = await getUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
 
+  //get expenses for current year
   let filter = {
     userId: user.id,
     date: {
@@ -38,54 +35,45 @@ export const loader = async ( { request }) => {
     }
   }
 
-  const expenses = await db.expense.findMany({
-      where: filter,
-      orderBy: { date: "desc" },
-      include: {
-        category: true
-      }, 
-    }) || []
- 
-
-    const data ={user, expenses, selectedYear}
+  const expenses = await getExpenses(filter) || []
+  const data = { user, expenses, selectedYear }
    
-
   return data
 }
-
-
-
 
 const Insights = () => {
   const transition = useTransition();
   const { expenses, selectedYear } = useLoaderData();
-  const yearSelectionRef = useRef()
-  const yearInputRef = useRef()
-
+  const yearSelectionRef = useRef();
+  const yearInputRef = useRef();
+  
   const expenseAmount =
-  expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
+    expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
 
   const highestExpense =
-  +expenses?.sort((a, b) => b.amount - a.amount)[0]?.amount || 0;
-  
-if (transition.state === "loading") {
-  return <div className="spinner spinner-large"></div>;
-}
+    +expenses?.sort((a, b) => b.amount - a.amount)[0]?.amount || 0;
 
-  const changeSelectedYear = (e, currYear) => {
-      const targetYear = e.target.className === 'year-selector-prev' ? currYear - 1 : currYear + 1
-      yearInputRef.current.value = targetYear
-      yearSelectionRef.current.submit()
+  if (transition.state === "loading") {
+    return <div className="spinner spinner-large"></div>;
   }
 
-
+  const changeSelectedYear = (e, currYear) => {
+    let targetYear =
+      e.target.className === "year-selector-prev" ? currYear - 1 : currYear + 1;
+      
+      //prevent overflow
+      if(targetYear > 9999 || targetYear < 1000) {
+        targetYear = new Date().getFullYear()
+      }
+      yearInputRef.current.value = targetYear;
+  };
 
   return (
     <>
       <div className="insights-header">
         <h2>Insights</h2>
         <Form method="GET" ref={yearSelectionRef}>
-          <button onClick={(e) => changeSelectedYear(e, selectedYear)} className="year-selector-prev">{`<`}</button>
+          <button disabled={transition.state === 'submitting'} onClick={(e) => changeSelectedYear(e, selectedYear)} className="year-selector-prev">{`<`}</button>
           <input
             name="year"
             id="year"
@@ -95,7 +83,7 @@ if (transition.state === "loading") {
             type="text"
             defaultValue={selectedYear}
           ></input>
-          <button onClick={(e) => changeSelectedYear(e, selectedYear)} className="year-selector-next">{`>`}</button>
+          <button disabled={transition.state === 'submitting'} onClick={(e) => changeSelectedYear(e, selectedYear)} className="year-selector-next">{`>`}</button>
         </Form>
       </div>
 
