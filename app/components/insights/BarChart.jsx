@@ -64,8 +64,8 @@ const options = {
 };
 
 const BarChart = ({ expenses }) => {
-  console.table(expenses);
 
+  //initilize monthly expenses to zero
   const expensesPerMonth = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8:0, 9: 0, 10: 0, 11: 0}
 
   expenses.forEach(expense => {
@@ -73,22 +73,7 @@ const BarChart = ({ expenses }) => {
     expensesPerMonth[month] += +expense.amount
   })
 
-  console.log(Object.values(expensesPerMonth))
-
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const months = ["Jan","Feb","Mar","Apr", "May", "Jun","Jul","Aug", "Sep","Oct","Nov","Dec"];
   
   const data = {
     labels: months,

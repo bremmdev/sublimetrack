@@ -1,6 +1,5 @@
 import { useLoaderData, useTransition, Form } from 'remix'
 import { useRef } from 'react'
-import { db } from "~/utils/db.server";
 import BarChart from '~/components/insights/BarChart'
 import DoughnutChart from '~/components/overview/DoughnutChart.jsx';
 import insightStyles from "~/styles/insights.css";
@@ -102,14 +101,14 @@ const Insights = () => {
             <div>{`$${highestExpense.toFixed(2)}`}</div>
           </div>
         </div>
-        <div className="expenses-chart">
+        <div className="expenses-chart hide-graph-mobile">
           {expenses && expenses.length !== 0 && (
             <>
               <BarChart expenses={expenses} />
             </>
           )}
         </div>
-        <div className="expenses-chart-donut">
+        <div className="expenses-chart-donut hide-graph-mobile">
           {expenses && expenses.length !== 0 && (
             <>
               <DoughnutChart expenses={expenses} />

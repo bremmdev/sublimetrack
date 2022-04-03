@@ -2,7 +2,6 @@ import { Doughnut } from "react-chartjs-2";
 import {Chart as ChartJS, ArcElement, Legend, Tooltip, Title} from 'chart.js'
 ChartJS.register(ArcElement, Legend, Tooltip, Title);
 
-
 const options = {
   cutout: "60%",
   plugins: {
@@ -14,8 +13,7 @@ const options = {
       font: {
         size:18
       }
-    }
-   
+    }  
   },
 };
 
