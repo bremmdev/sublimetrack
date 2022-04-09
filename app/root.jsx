@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch
 } from "remix";
 
 import { FiMonitor } from "react-icons/fi";
@@ -132,18 +133,14 @@ function Layout({ children }) {
   );
 }
 
-export function ErrorBoundary({ error }) {
+export function CatchBoundary() {
+  const caught = useCatch();
   return (
-    <html>
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {/* add the UI you want your users to see */}
-        <Scripts />
-      </body>
-    </html>
+    <Document>
+      <Layout>
+        <h1>Oops...something went wrong</h1>
+        <p className="error-boundary-msg">{caught.status} {caught.statusText}</p>
+      </Layout>
+    </Document>
   );
 }

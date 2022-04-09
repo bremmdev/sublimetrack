@@ -1,5 +1,4 @@
 import { useLoaderData, Link, useTransition, Meta } from "remix"
-import { db } from "~/utils/db.server";
 import expenseStyles from '~/styles/expenses.css'
 import overviewStyles from '~/styles/overview.css'
 import progressBarStyles from '~/styles/progressBar.css'
@@ -18,8 +17,8 @@ export const meta = () => ({
 export const loader = async ({ request })  => {
   const currDate = new Date()
   const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
-  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0);
-
+  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 1);
+ 
   const user = await getUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
  
   const filter = { 
@@ -31,8 +30,8 @@ export const loader = async ({ request })  => {
     }
 
     const expenses = await getExpenses(filter)
-    const currentBudget = await getCurrentBudgetForUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
-    const data ={user, expenses,currentBudget}
+    const currentBudget = await getCurrentBudgetForUser(user.id)
+    const data = { user, expenses,currentBudget }
     
     return data;
 };
@@ -40,7 +39,6 @@ export const loader = async ({ request })  => {
 
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
-  console.log('app', user)
   const transition = useTransition()
 
   //calculate expenses and balance
@@ -126,7 +124,6 @@ export default function Home() {
         )}
       </div>
 
-      
       <div className="expenses-chart">
         {expenses && expenses.length !== 0 && (
           <>
@@ -136,8 +133,6 @@ export default function Home() {
           </>
         )}
       </div>
-
-
     </div>
   );
 }

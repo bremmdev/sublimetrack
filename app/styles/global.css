@@ -235,6 +235,11 @@ h4{
   margin-left:25%;
 }
 
+.error-boundary-msg{
+  font-weight:bold;
+  margin-top:1em;
+  font-size:1.25rem;
+}
 
 /*mobile*/
 

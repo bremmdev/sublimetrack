@@ -1,5 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
-import {Chart as ChartJS, ArcElement, Legend, Tooltip, Title} from 'chart.js'
+import { Chart as ChartJS, ArcElement, Legend, Tooltip, Title } from 'chart.js'
 ChartJS.register(ArcElement, Legend, Tooltip, Title);
 
 const options = {
@@ -48,7 +48,6 @@ const data = {
     <div className="doughnut-container">
       <Doughnut data={data} options={options}></Doughnut>
     </div>
-    
   );
 }
 
