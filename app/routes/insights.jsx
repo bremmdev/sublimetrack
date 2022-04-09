@@ -45,7 +45,7 @@ const Insights = () => {
   const { expenses, selectedYear } = useLoaderData();
   const yearSelectionRef = useRef();
   const yearInputRef = useRef();
-  
+
   const expenseAmount =
     expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
 

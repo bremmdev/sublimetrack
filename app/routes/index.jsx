@@ -25,11 +25,12 @@ export const loader = async ({ request })  => {
       userId: user.id,
       date: {
         gte: startOfMonth,
-        lte: endOfMonth
+        lt: endOfMonth
       }
     }
 
     const expenses = await getExpenses(filter)
+    console.log(expenses)
     const currentBudget = await getCurrentBudgetForUser(user.id)
     const data = { user, expenses,currentBudget }
     
@@ -40,7 +41,7 @@ export const loader = async ({ request })  => {
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
   const transition = useTransition()
-
+  
   //calculate expenses and balance
   const budgetAmount = +currentBudget?.amount || 0;
   const expenseAmount = expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
