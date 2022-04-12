@@ -24,6 +24,9 @@ export const loader = async ( { request }) => {
   const selectedYear = year && validateYear(year) ? +year : new Date().getFullYear()
 
   const user = await getUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
+  if(!user) {
+    throw new Response("User not found", { status: 404})
+  }
 
   //get expenses for current year
   let filter = {
@@ -34,9 +37,12 @@ export const loader = async ( { request }) => {
     }
   }
 
-  const expenses = await getExpenses(filter) || []
+  const expenses = await getExpenses(filter)
+  if (!expenses) {
+    throw new Response("Loading expenses failed", { status: 404 });
+  }
+
   const data = { user, expenses, selectedYear }
-   
   return data
 }
 

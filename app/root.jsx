@@ -133,14 +133,28 @@ function Layout({ children }) {
   );
 }
 
-export function CatchBoundary() {
-  const caught = useCatch();
+export function ErrorBoundary({ error }) {
   return (
     <Document>
       <Layout>
         <h1>Oops...something went wrong</h1>
-        <p className="error-boundary-msg">{caught.status} {caught.statusText}</p>
+        <p className="error-boundary-msg">{error.message}</p>
       </Layout>
     </Document>
   );
 }
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  const errorMessage = caught.data ? JSON.stringify(caught.data, null, 2).replace(/['"]/gi, '') : `${caught.status}: ${caught.statusText}`
+
+  return (
+    <Document>
+      <Layout>
+        <h1>Oops...something went wrong</h1>
+        <p className="error-boundary-msg">{errorMessage}</p>
+      </Layout>
+    </Document>
+  );
+}
+

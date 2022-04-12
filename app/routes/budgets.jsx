@@ -1,10 +1,11 @@
-import { useLoaderData, useTransition, Link, Outlet, Meta } from "remix"
+import { useLoaderData, useTransition, Link, Outlet, Meta, useCatch } from "remix"
 import { getUser } from "~/utils/getUser.js"
 import { db } from "~/utils/db.server";
 import budgetStyles from "~/styles/budgets.css";
 import formStyles from "~/styles/forms.css";
 import BudgetItem from "~/components/budgets/BudgetItem";
 import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser'
+import { getBudgetsForUser } from '~/utils/getBudgetsForUser'
 
 export const links = () => [{ href: budgetStyles, rel: "stylesheet" }, { href: formStyles, rel: 'stylesheet'}];
 
@@ -13,19 +14,19 @@ export const meta = () => ({
 });
 
 export const loader = async ({ request }) => {
- 
-  const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3");
+  const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
 
-  const budgets = await db.budget.findMany({
-    where: {
-      userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3"
-    },
-    orderBy: { startDate: "desc" },
-  })
+  if(!user) {
+    throw new Response("User not found", { status: 404})
+  }
 
+  const budgets = await getBudgetsForUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
+  if(!budgets){
+    throw new Response("Loading budgets failed", { status: 404})
+  }
 
   const data = { user, budgets }
-  return data 
+  return data
 }
 
 export const action = async ({ request }) => {
@@ -46,7 +47,7 @@ export const action = async ({ request }) => {
         throw new Error("Budget not found");
       }
 
-      //get the last budget and remove the endDate
+      //get the last budget and remove the endDate to make it the current budget
       const currentBudget = await getCurrentBudgetForUser(
         "70e0cff2-7589-4de8-9f2f-4e372a5a15f3"
       );
@@ -60,21 +61,17 @@ export const action = async ({ request }) => {
         },
       });
     } catch (e) {
-      //this error property will be available on fetcher.data in expenseItem
+      //this error property will be available on fetcher.data in budgetItem
       return { error: true };
     }
-
     return {};
   }
-
   return null;
 };
 
 const Budgets = () => {
   const data = useLoaderData();
-  
   const budgets = data?.budgets || [];
-
   const transition = useTransition();
 
   if (transition.state === "loading" || transition.state === "submitting") {
@@ -90,6 +87,7 @@ const Budgets = () => {
         </Link>
       </div>
 
+      {/*outlet for new budget form*/}
       <Outlet />
 
       <ul>
@@ -102,3 +100,4 @@ const Budgets = () => {
 };
 
 export default Budgets
+

@@ -4,7 +4,7 @@ export const getCurrentBudgetForUser = async (userId) => {
   const currDate = new Date()
   const budgets = await db.budget.findMany({
     where: {
-      userId
+      userId: userId
     }
   });
   const currBudget = budgets.find(

@@ -14,29 +14,37 @@ export const meta = () => ({
   title: "Sublimetrack - Overview"
 });
 
-export const loader = async ({ request })  => {
-  const currDate = new Date()
-  const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1)
-  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 1);
- 
-  const user = await getUser('70e0cff2-7589-4de8-9f2f-4e372a5a15f3')
- 
-  const filter = { 
-      userId: user.id,
-      date: {
-        gte: startOfMonth,
-        lt: endOfMonth
-      }
-    }
+export const loader = async ({ request }) => {
+  const currDate = new Date();
+  const startOfMonth = new Date(currDate.getFullYear(), currDate.getMonth(), 1);
+  const endOfMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1,1);
 
-    const expenses = await getExpenses(filter)
-    console.log(expenses)
-    const currentBudget = await getCurrentBudgetForUser(user.id)
-    const data = { user, expenses,currentBudget }
-    
-    return data;
+  const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3");
+  if (!user) {
+    throw new Response("User not found", { status: 404 });
+  }
+
+  const filter = {
+    userId: user.id,
+    date: {
+      gte: startOfMonth,
+      lt: endOfMonth,
+    },
+  };
+
+  const expenses = await getExpenses(filter);
+  if (!expenses) {
+    throw new Response("Loading expenses failed", { status: 404 });
+  }
+
+  const currentBudget = await getCurrentBudgetForUser(user.id);
+  if(!currentBudget) {
+    throw new Response("Loading budget failed", {status: 404})
+  }
+
+  const data = { user, expenses, currentBudget };
+  return data
 };
-
 
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
@@ -137,3 +145,4 @@ export default function Home() {
     </div>
   );
 }
+

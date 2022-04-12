@@ -28,6 +28,10 @@ export const loader = async ({ request, params }) => {
   //get data
   const categories = await db.category.findMany();
   const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3");
+
+  if(!user) {
+    throw new Response("User not found", { status: 404})
+  }
   
   const filter = {
     userId: user.id,
@@ -38,6 +42,10 @@ export const loader = async ({ request, params }) => {
 
   //get expenses for specific user
   const expenses = await getExpenses(filter)
+
+  if (!expenses) {
+    throw new Response("Loading expenses failed", { status: 404 });
+  }
 
   const data = { user, expenses, categories };
   return data;

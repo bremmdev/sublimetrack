@@ -1,5 +1,5 @@
 const ProgressBar = (props) => {
-  let width = (props.expense / props.budget) * 100;
+  let width =(props.expense / props.budget) * 100;
   if (width > 100) {
     width = 100;
   }

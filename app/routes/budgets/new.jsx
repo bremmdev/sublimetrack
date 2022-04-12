@@ -1,12 +1,12 @@
 import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition } from 'remix'
 import { db } from '~/utils/db.server.js'
-
+import { getBudgetsForUser } from '~/utils/getBudgetsForUser.js';
 
 const validateForm = (amount, date) => {
   const currDate = new Date();
   const startDate = date ? new Date(date) : null;
   let dateError = null
-
+ 
   if (!startDate) {
     dateError = "Please fill in the start date";
   }
@@ -40,7 +40,7 @@ export const action = async ({ request }) => {
   const fieldErrors = validateForm(amount, startDate)
 
   //check if there is a future budget already
-  const budgets = await db.budget.findMany({})
+  const budgets = await getBudgetsForUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
   const futureBudget = budgets.find(budget => new Date(budget.startDate) > new Date())
 
   //if there already is a future budget
@@ -54,17 +54,11 @@ export const action = async ({ request }) => {
   }
 
   try {
-
-    const currentBudget = await db.budget.findFirst({
-      where: {
-        userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3",
-        endDate: null,
-      },
-    });
+    const currentBudget = budgets.find(budget => budget.endDate === null)
 
     if (!currentBudget) {
-      throw new Error("Updating budget failed");
-    }
+      throw new Error('Updating budget failed!')
+   }
 
     //set end date for current budget
     const updatedBudget = await db.budget.update({
@@ -76,35 +70,34 @@ export const action = async ({ request }) => {
       },
     });
 
+    if(!updatedBudget){
+      throw new Response('Updating budget failed!')
+    }
+
     //no errors, so save data
     await db.budget.create({ data: fields });
     return redirect("/budgets");
   } catch (e) {
-    throw new Error(e);
+    throw new Response(e, {
+      status: 404,
+    });
   }
 };
 
-
 const AddBudget = () => {
-
-  
   let transition = useTransition()
   const actionData = useActionData()
-
-  console.log(actionData?.fields?.startDate)
- 
+  console.log(actionData)
   if(transition.state === 'loading') {
     return  <div className="spinner spinner-large"></div>
   }
 
   return (
     <div className="form-wrapper">
-      
       <Form method="POST" className="form">
       <div className="form-control">
           <label htmlFor="start-date">Start date</label>
-          <input type="date" name="start-date" defaultValue={actionData?.fields?.startDate.split('T')[0]}/>
-
+          <input type="date" name="start-date" defaultValue={actionData?.fields?.startDate.split('T')[0] || new Date().toISOString().split('T')[0]}/>
         </div>
         {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>}
         <div className="form-control">

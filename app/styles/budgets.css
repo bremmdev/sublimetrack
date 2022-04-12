@@ -19,8 +19,6 @@
   font-weight:700;
 }
 
-
-
 .budgets-list li.active > div{
  color: var(--dark-accent-clr);
 }
@@ -53,4 +51,10 @@
 .edit-budget-icon:hover {
   transform:scale(1.15);
   transition: transform 0.3s;
+}
+
+.edit-budget-placeholder{
+  font-size:1.5rem;
+  margin-left:0.2em;
+  width:1em;
 }
