@@ -1,6 +1,7 @@
-import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition } from 'remix'
+import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition, useCatch } from 'remix'
 import { db } from '~/utils/db.server.js'
 import { getBudgetsForUser } from '~/utils/getBudgetsForUser.js';
+import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser.js';
 
 const validateForm = (amount, date) => {
   const currDate = new Date();
@@ -26,6 +27,16 @@ const validateForm = (amount, date) => {
   return validations;
 };
 
+export const loader = async() => {
+  const budgets = await getBudgetsForUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
+  if(!budgets){
+    throw new Response("Loading form failed", { status: 404})
+  }
+  //check for an existing future budget, needed for warning message to user
+  const futureBudget = budgets.find(budget => new Date(budget.startDate) > new Date())
+  return futureBudget ? true : false
+}
+
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const startDate = formData.get("start-date");
@@ -39,28 +50,15 @@ export const action = async ({ request }) => {
 
   const fieldErrors = validateForm(amount, startDate)
 
-  //check if there is a future budget already
-  const budgets = await getBudgetsForUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
-  const futureBudget = budgets.find(budget => new Date(budget.startDate) > new Date())
-
-  //if there already is a future budget
-  if(futureBudget){
-    return json({ formError: 'There is already a future budget. Delete it before creating a new one.', fields }, { status: 400 });
-  }
-
   //return errors and filled in data
   if (Object.values(fieldErrors).some(Boolean)) {
     return json({ fieldErrors, fields }, { status: 400 });
   }
 
   try {
-    const currentBudget = budgets.find(budget => budget.endDate === null)
-
-    if (!currentBudget) {
-      throw new Error('Updating budget failed!')
-   }
-
     //set end date for current budget
+    const currentBudget = await getCurrentBudgetForUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
+
     const updatedBudget = await db.budget.update({
       where: {
         id: currentBudget.id,
@@ -71,14 +69,16 @@ export const action = async ({ request }) => {
     });
 
     if(!updatedBudget){
-      throw new Response('Updating budget failed!')
+      throw new Response("Loading form failed", { status: 404})
     }
 
     //no errors, so save data
     await db.budget.create({ data: fields });
+
     return redirect("/budgets");
+  
   } catch (e) {
-    throw new Response(e, {
+    throw new Error('Updating database failed', {
       status: 404,
     });
   }
@@ -86,29 +86,26 @@ export const action = async ({ request }) => {
 
 const AddBudget = () => {
   let transition = useTransition()
+  const hasFutureBudget = useLoaderData()
   const actionData = useActionData()
-  console.log(actionData)
-  if(transition.state === 'loading') {
-    return  <div className="spinner spinner-large"></div>
-  }
 
   return (
     <div className="form-wrapper">
-      <Form method="POST" className="form">
+      {hasFutureBudget && <p className='error-message-center'>There is already a future budget. Delete it before creating a new one.</p>}
+      <Form method="POST" className="form">  
       <div className="form-control">
           <label htmlFor="start-date">Start date</label>
           <input type="date" name="start-date" defaultValue={actionData?.fields?.startDate.split('T')[0] || new Date().toISOString().split('T')[0]}/>
         </div>
-        {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>}
+        {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>} 
         <div className="form-control">
           <label htmlFor="amount">Amount</label>
           <input type="number" name="amount" defaultValue={actionData?.fields?.amount || '0.00'} step='0.01'/>
         </div>
         {actionData?.fieldErrors?.amountError && <p className='error-message'>{actionData.fieldErrors.amountError}</p>}
-        {actionData?.formError && <p className='error-message'>{actionData.formError}</p>}
         <div className="form-buttons">
-          <button name="_action" value="create" type="submit" className="btn btn-primary">
-           Add
+          <button name="_action" value="create" type="submit" className="btn btn-primary" disabled={hasFutureBudget || transition.state === 'submitting'}>
+           {transition.state === 'submitting' ? 'Adding...' : 'Add'}
           </button>
           <Link to="/budgets" className="btn btn-secondary">
             Go Back
@@ -120,3 +117,28 @@ const AddBudget = () => {
 }
 
 export default AddBudget
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  const errorMessage = caught.data ? JSON.stringify(caught.data, null, 2).replace(/['"]/gi, "") : `${caught.status}: ${caught.statusText}`;
+
+  return (
+    <div class="text-center">
+      <p className="error-boundary-msg my-1">{errorMessage}</p>
+      <Link to="/budgets" className="btn btn-secondary">
+            Go Back
+      </Link>
+    </div>
+  );
+}
+
+export function ErrorBoundary({ error }) {
+  return (
+    <div class="text-center">
+      <p className="error-boundary-msg my-1">{error.message}</p>
+      <Link to="/budgets" className="btn btn-secondary">
+            Go Back
+      </Link>
+    </div>
+  );
+}

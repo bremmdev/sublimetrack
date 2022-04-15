@@ -5,7 +5,8 @@ async function seed() {
  //createCategories()
 // createUsers()
  // createBudgets()
- createExpenses()
+ //createExpenses()
+ createExpensesBatch()
 }
 
 seed()
@@ -58,6 +59,24 @@ async function createExpenses() {
     { title: 'Banana Company', amount: 13, date: new Date("2022-03-15"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "8297ef3b-8790-44d8-86de-cf211f31dcfd"},
     { title: 'test', amount: 100.43, date: new Date("2022-03-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "2544e726-3c82-42f7-91b9-def5b4b4f444"},
     { title: 'Lol Company', amount: 13, date: new Date("2022-03-15"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "2cd7d5d9-be84-472d-ae2d-19b79b9b22fb"}, 
+  ]
+  });
+}
+
+
+async function createExpensesBatch() {
+  await prisma.expense.createMany({
+    data: [ 
+    { title: 'Delta Supermarket', amount: 34.43, date: new Date("2022-04-07"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d05a1cdd-5341-4abd-9a53-e1a012d0dd3d"},
+    { title: 'Sushi Paradise', amount: 44.13, date: new Date("2022-04-7"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "d05a1cdd-5341-4abd-9a53-e1a012d0dd3d"},
+    { title: 'Storm Energy', amount: 89.54, date: new Date("2022-04-7"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "3fdb010d-547d-451f-856a-0e0d3e207462"},
+    { title: 'Health Insurance Company', amount: 125, date: new Date("2022-04-7"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "3fdb010d-547d-451f-856a-0e0d3e207462"},
+    { title: 'Banana Company', amount: 13, date: new Date("2022-04-7"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "8297ef3b-8790-44d8-86de-cf211f31dcfd"},
+    { title: 'test', amount: 100.43, date: new Date("2022-04-8"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "2544e726-3c82-42f7-91b9-def5b4b4f444"},
+    { title: 'Lol Company', amount: 13, date: new Date("2022-04-10"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "2cd7d5d9-be84-472d-ae2d-19b79b9b22fb"}, 
+    { title: 'Banana', amount: 13, date: new Date("2022-04-10"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "8297ef3b-8790-44d8-86de-cf211f31dcfd"},
+    { title: 'testi', amount: 100.43, date: new Date("2022-04-11"), userId: "70e0cff2-7589-4de8-9f2f-4e372a5a15f3", categoryId: "2544e726-3c82-42f7-91b9-def5b4b4f444"},
+    { title: 'Lol Companyf', amount: 13, date: new Date("2022-04-12"), userId: "c97df944-505b-4508-8528-1de8da028fc7", categoryId: "2cd7d5d9-be84-472d-ae2d-19b79b9b22fb"}, 
   ]
   });
 }

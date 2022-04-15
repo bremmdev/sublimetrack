@@ -5,6 +5,7 @@
   --dark-secondary-clr: #191D43;
   --dark-accent-clr: #00CCFF; 
   font-size:1rem;
+
 }
 
 /* general */
@@ -183,6 +184,15 @@ h4{
   opacity:1;
 }
 
+.btn-primary:disabled{
+  opacity:0.3;
+}
+
+.btn-primary:hover:disabled{
+  opacity:0.3;
+  background-color: var(--dark-accent-clr);
+}
+
 .btn-secondary{
   border:1px solid var(--dark-accent-clr);
 }
@@ -246,6 +256,10 @@ h4{
   margin-top:1em;
   color:#FF5555;
   font-size:1.25rem;
+}
+
+.text-center{
+  text-align: center;
 }
 
 /*mobile*/
@@ -338,7 +352,6 @@ h4{
     scrollbar-color: #3d3f51 var(--dark-primary-clr);
   }
 }
-
 
 /* loading spinner */ 
 .spinner{

@@ -32,7 +32,7 @@ export const loader = async ({ request }) => {
     },
   };
 
-  const expenses = await getExpenses(filter);
+  const expenses = await getExpenses(filter)
   if (!expenses) {
     throw new Response("Loading expenses failed", { status: 404 });
   }
@@ -42,14 +42,15 @@ export const loader = async ({ request }) => {
     throw new Response("Loading budget failed", {status: 404})
   }
 
-  const data = { user, expenses, currentBudget };
+  //return only 5 latest expenses
+  const data = { user, expenses: expenses.slice(0,5), currentBudget };
   return data
 };
 
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
   const transition = useTransition()
-  
+
   //calculate expenses and balance
   const budgetAmount = +currentBudget?.amount || 0;
   const expenseAmount = expenses?.reduce((prev, exp) => prev + Math.abs(+exp.amount), 0) || 0;
@@ -98,7 +99,7 @@ export default function Home() {
         {expenses && expenses.length !== 0 && (
           <>
             <ul>
-              {expenses.slice(0, 5).map((expense) => (
+              {expenses.map((expense) => (
                 <li key={expense.id}>
                   <span
                     className="category-indicator"

@@ -15,7 +15,6 @@ export const meta = () => ({
 
 export const loader = async ({ request }) => {
   const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3")
-
   if(!user) {
     throw new Response("User not found", { status: 404})
   }
@@ -71,10 +70,10 @@ export const action = async ({ request }) => {
 
 const Budgets = () => {
   const data = useLoaderData();
-  const budgets = data?.budgets || [];
+  const budgets = data?.budgets;
   const transition = useTransition();
 
-  if (transition.state === "loading" || transition.state === "submitting") {
+  if (transition.state === "loading") {
     return <div className="spinner spinner-large"></div>;
   }
 
