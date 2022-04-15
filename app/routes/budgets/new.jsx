@@ -2,6 +2,9 @@ import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition
 import { db } from '~/utils/db.server.js'
 import { getBudgetsForUser } from '~/utils/getBudgetsForUser.js';
 import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser.js';
+import formStyles from "~/styles/forms.css";
+
+export const links = () => [{ href: formStyles, rel: "stylesheet" }];
 
 const validateForm = (amount, date) => {
   const currDate = new Date();

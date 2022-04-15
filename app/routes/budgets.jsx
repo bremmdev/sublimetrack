@@ -2,12 +2,12 @@ import { useLoaderData, useTransition, Link, Outlet, Meta, useCatch } from "remi
 import { getUser } from "~/utils/getUser.js"
 import { db } from "~/utils/db.server";
 import budgetStyles from "~/styles/budgets.css";
-import formStyles from "~/styles/forms.css";
+
 import BudgetItem from "~/components/budgets/BudgetItem";
 import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser'
 import { getBudgetsForUser } from '~/utils/getBudgetsForUser'
 
-export const links = () => [{ href: budgetStyles, rel: "stylesheet" }, { href: formStyles, rel: 'stylesheet'}];
+export const links = () => [{ href: budgetStyles, rel: "stylesheet" }];
 
 export const meta = () => ({
   title: "Sublimetrack - Budgets"

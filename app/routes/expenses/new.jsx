@@ -1,5 +1,8 @@
-import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition } from 'remix'
+import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition} from 'remix'
 import { db } from '~/utils/db.server.js'
+import formStyles from "~/styles/forms.css";
+
+export const links = () => [{ href: formStyles, rel: 'stylesheet'}];
 
 export const loader = async () => {
     const categories = await db.category.findMany()
