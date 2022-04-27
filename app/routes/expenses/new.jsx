@@ -1,6 +1,7 @@
 import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition} from 'remix'
 import { db } from '~/utils/db.server.js'
 import formStyles from "~/styles/forms.css";
+import { useEffect, useRef } from 'react'
 
 export const links = () => [{ href: formStyles, rel: 'stylesheet'}];
 
@@ -47,12 +48,17 @@ export const action = async ({ request }) => {
 }
 
 const AddExpense = () => {
-
   const { categories } = useLoaderData()
   const actionData = useActionData()
   let transition = useTransition()
   const isAdding = transition.submission && transition.submission.formData.get("_action") === 'create'
+  const inputRef = useRef(null)
  
+  useEffect(() => {
+    inputRef.current.focus()
+}, [])
+
+
   if(transition.state === 'loading') {
     return  <div className="spinner spinner-large"></div>
   }
@@ -62,8 +68,7 @@ const AddExpense = () => {
       <Form method="POST" className="form">
         <div className="form-control">
           <label htmlFor="title">Title</label>
-          <input type="text" name="title" defaultValue={actionData?.fields?.title} />
-          
+          <input type="text" ref={inputRef} name="title" defaultValue={actionData?.fields?.title} />
         </div>
         {actionData?.fieldErrors?.titleError && <p className='error-message'>{actionData.fieldErrors.titleError}</p>}
         <div className="form-control">

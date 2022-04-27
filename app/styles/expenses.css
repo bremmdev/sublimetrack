@@ -127,11 +127,6 @@
   border-bottom: 2px solid var(--accent-clr);
 }
 
-.datepicker-label span {
-  font-weight: 700;
-  margin-right: 1em;
-}
-
 .search-field::placeholder {
   font-weight: 700;
 }
@@ -143,45 +138,61 @@
   .delete-exp-icon {
     left: 0.5em;
   }
-  .filter-controls > * {
-    width: 100%;
-  }
+ 
   .filter-controls {
     justify-content: space-between;
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   .expenses-list-header-inner {
     gap: 0.5em;
   }
   .search-field,
   .datepicker,
   .filter-category {
-    flex-basis:100%;
+    flex-grow:1;
   }
+
   .filter-controls {
     margin-top: 1em;
     flex-direction: column;
     gap: 1em;
   }
-  
+  .filter-controls > form{
+    width:100%;
+  }
+
+  .form-inner-container{
+    justify-content: space-between;
+  }
+ 
+  .search-field{
+    width:100%;
+  }
+
+
 }
 
 @media (max-width: 600px) {
   .expense-date {
-    flex-basis: 25%;
+    flex-basis: 30%;
   }
-  .expense-amount {
-    flex-basis: 25%;
-  }
+ 
   .expense-title-cat {
     flex-basis: 50%;
   }
 
-  .datepicker::before {
-    content: attr(placeholder);
-    display: inline-block;
-    margin-right: 0.5em;
+  .form-inner-container{
+    flex-direction: column;
+  }
+
+  .datepicker, .filter-category{
+    width:100%;
+  }
+
+  .filter-category {
+    margin-top: 1em;
+    margin-left: 0;
   }
 }

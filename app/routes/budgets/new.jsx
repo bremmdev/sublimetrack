@@ -1,5 +1,6 @@
 import { Form, Link, redirect, json, useLoaderData, useActionData, useTransition, useCatch } from 'remix'
 import { db } from '~/utils/db.server.js'
+import { useRef, useEffect } from 'react'
 import { getBudgetsForUser } from '~/utils/getBudgetsForUser.js';
 import { getCurrentBudgetForUser } from '~/utils/getCurrentBudgetForUser.js';
 import formStyles from "~/styles/forms.css";
@@ -91,6 +92,12 @@ const AddBudget = () => {
   let transition = useTransition()
   const hasFutureBudget = useLoaderData()
   const actionData = useActionData()
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+      inputRef.current.focus()
+  }, [])
+
 
   return (
     <div className="form-wrapper">
@@ -98,7 +105,7 @@ const AddBudget = () => {
       <Form method="POST" className="form">  
       <div className="form-control">
           <label htmlFor="start-date">Start date</label>
-          <input type="date" name="start-date" defaultValue={actionData?.fields?.startDate.split('T')[0] || new Date().toISOString().split('T')[0]}/>
+          <input type="date" name="start-date" ref={inputRef} defaultValue={actionData?.fields?.startDate.split('T')[0] || new Date().toISOString().split('T')[0]}/>
         </div>
         {actionData?.fieldErrors?.dateError && <p className='error-message'>{actionData.fieldErrors.dateError}</p>} 
         <div className="form-control">
