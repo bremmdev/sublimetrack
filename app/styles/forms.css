@@ -36,7 +36,7 @@
   color:inherit;
   font-size:inherit;
   border:0;
-  background-color: #0E0F2E;
+  background-color: var(--primary-clr);
   outline:none;
   border-bottom:2px solid #AAA;
   padding: 0.7em 1em;
@@ -48,7 +48,7 @@
 }
 
 .form input:focus{
-  border-bottom:2px solid #00CCFF;
+  border-bottom:2px solid var(--accent-clr);
 }
 
 ::-webkit-calendar-picker-indicator {

@@ -6,7 +6,6 @@
 
 .stats-container{
   margin-top:2em;
-  color: var(--dark-primary-clr);
   display:flex;
   gap:2em;
   font-size: 1.1em;
@@ -14,7 +13,9 @@
 
 .stat-card{
   padding:1.25em;
-  background:var(--dark-accent-clr);
+  border:1px solid var(--accent-clr);
+  color:var(--text-clr);
+  background:var(--primary-clr);
   border-radius:0.5em;
   display:flex;
   flex-direction: column;
@@ -54,8 +55,8 @@
   font-size: 1rem;
   font-family: inherit;
   transition: border 0.25s ease-in 0s;
-  color: white;
-  background-color: #0e0f2e;
+  color: var(--text-color);
+  background-color: var(--primary-clr);
   width: 100px;
   text-align:center;
   font-weight: bold;
@@ -73,10 +74,10 @@
 
 .year-selector-prev:hover,
 .year-selector-next:hover {
-  background-color: var(--dark-accent-clr);
+  background-color: var(--accent-clr);
   transition: background-color 0.2s ease-in-out;
-  color:var(--dark-primary-clr);
-  border: 1px solid var(--dark-accent-clr);
+  color:var(--primary-clr);
+  border: 1px solid var(--accent-clr);
   
 }
 

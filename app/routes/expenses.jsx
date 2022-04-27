@@ -1,11 +1,10 @@
-import { useLoaderData, Form, Link, Outlet, useSearchParams, useLocation, useTransition, Meta} from "remix";
+import { useLoaderData, Form, Link, Outlet, useSearchParams, useLocation, useTransition, useSubmit} from "remix";
 import { db } from "~/utils/db.server";
 import expenseStyles from "~/styles/expenses.css";
 import { getUser } from "~/utils/getUser";
 import { getExpenses } from "~/utils/getExpenses";
 import { useEffect, useRef, useState } from "react";
 import ExpenseItem from "~/components/expenses/ExpenseItem";
-import Fuse from "fuse.js";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }];
 
@@ -13,9 +12,10 @@ export const meta = () => ({
   title: "Sublimetrack - Expenses"
 });
 
-export const loader = async ({ request, params }) => {
+export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const from = new URLSearchParams(url.search).get("from");
+  const cat = new URLSearchParams(url.search).get("cat");
 
   //if there is no from OR if from is empty set startDate to null
   const startDate = from ? new Date(from) : null
@@ -25,15 +25,21 @@ export const loader = async ({ request, params }) => {
   const today_minus_30 = new Date(new Date().setDate(today.getDate() - 30));
 
   //get data
-  const categories = await db.category.findMany();
   const user = await getUser("70e0cff2-7589-4de8-9f2f-4e372a5a15f3");
-
   if(!user) {
     throw new Response("User not found", { status: 404})
   }
   
+  const categories = await db.category.findMany();
+  if(!categories) {
+    throw new Response("Categories not found", { status: 404})
+  }
+
+  const selectedCat = categories.find(category => category.name === cat)
+ 
   const filter = {
     userId: user.id,
+    categoryId: selectedCat?.id || undefined,
     date: {
       gte: startDate || today_minus_30
     }
@@ -46,7 +52,7 @@ export const loader = async ({ request, params }) => {
     throw new Response("Loading expenses failed", { status: 404 });
   }
 
-  const data = { user, expenses, categories };
+  const data = { user, expenses, categories, today_minus_30 };
   return data;
 };
 
@@ -78,74 +84,45 @@ export const action = async ({ request, params }) => {
 };
 
 const Expenses = () => {
-  const data = useLoaderData();
+  const { user, expenses, categories, today_minus_30 } = useLoaderData();
+  const submit = useSubmit()
 
   const [params] = useSearchParams();
-  const [expenses, setExpenses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('')
 
   const location = useLocation();
   const searchInputRef = useRef(null);
   const dateInputRef = useRef(null);
   const filterInputRef = useRef(null);
-  const dateSubmitRef = useRef(null);
   const transition = useTransition();
 
-  //fuse instance for client-side search
-  const fuse = new Fuse(expenses, {
-    keys: ["title"],
-    options: {
-      threshold: 0.1,
-      shouldSort: false,
-      minMatchCharLength: 2,
-      findAllMatches: true,
-    },
-  });
-
   const clearInputFields = () => {
-    searchInputRef.current.value = "";
+    dateInputRef.current.value = "";
     filterInputRef.current.value = "";
   };
 
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const searchFilter = (expenses, searchTerm) => {
+    if(searchTerm === '') return expenses
+    return expenses.filter(exp => exp.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  }
+
   useEffect(() => {
-    //clear search input when we add an expense
+    //clear filter inputs when we add an expense
     if (location.pathname === "/expenses/new") {
       clearInputFields();
-      setExpenses(data.expenses);
+      setSearchTerm('')
     }
   }, [location]);
 
-  useEffect(() => {
-    clearInputFields();
-    setExpenses(data.expenses);
-  }, [data.expenses]);
+  const handleFormChange = (e) => {
+    submit(e.currentTarget, { replace: true });
+  }
 
-  const activateSearch = (e) => {
-    if (!e.target.value) {
-      filterInputRef.current.value = "";
-      //'reset' state to all fetched expenses
-      setExpenses(data.expenses);
-    } else {
-      //run fuse to filter state based on search query
-      setExpenses(fuse.search(e.target.value).map((item) => item.item));
-    }
-  };
-
-  const submitDateSelect = () => {
-      dateSubmitRef.current.click();
-  };
-
-  const filterByCategory = (e) => {
-    const categoryId = e.target.value;
-    if (e.target.value) {
-      setExpenses(data.expenses.filter((exp) => exp.categoryId === categoryId));
-    } else {
-      //'reset' state to all fetched expenses
-      clearInputFields()
-      setExpenses(data.expenses);
-    }
-  };
-
-  if (transition.state === "loading" || transition.state === "submitting") {
+  if (transition.state === "loading") {
     return <div className="spinner spinner-large"></div>;
   }
 
@@ -160,48 +137,43 @@ const Expenses = () => {
         </div>
 
         <div className="expenses-list-header-inner filter-controls">
-          <Form method="GET">
-            <label htmlFor="from" className="datepicker-label">
-              <span
-                className="hidden-mobile"
-                hidden={location.pathname === "/expenses/new"}
-              >
-                From date:
-              </span>
-              <input
-                className="datepicker"
-                id="from"
-                ref={dateInputRef}
-                type="date"
-                name="from"
-                placeholder="From date"
-                onChange={submitDateSelect}
-                disabled={location.pathname === "/expenses/new"}
-                defaultValue={params.get("from") || ""}
-              />
-            </label>
-            <button
-              type="submit"
-              ref={dateSubmitRef}
-              className="btn-invisible"
-            ></button>
-          </Form>
+          <Form method="GET" onChange={handleFormChange}>
+            <div className="form-inner-container">
+              <label htmlFor="from" className="datepicker-label">
+                <input
+                  className="datepicker"
+                  id="from"
+                  ref={dateInputRef}
+                  type="date"
+                  name="from"
+                  disabled={location.pathname === "/expenses/new"}
+                  defaultValue={params.get("from") || new Date(today_minus_30).toISOString().split('T')[0]}
+                />
+              </label>
 
-          <select
-            className="filter-category"
-            onChange={filterByCategory}
-            ref={filterInputRef}
-            disabled={location.pathname === "/expenses/new"}
-          >
-            <option value="" style={{ color: "#666", fontWeight: "700" }}>
-              Select category
-            </option>
-            {data.categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+              <select
+                className="filter-category"
+                id="cat"
+                name="cat"
+                ref={filterInputRef}
+                disabled={location.pathname === "/expenses/new"}
+                defaultValue={params.get("cat") || ""}
+              >
+                <option value="" style={{ color: "#666", fontWeight: "700" }}>
+                  Select category
+                </option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                className="btn-invisible"
+              ></button>
+            </div>
+          </Form>
 
           <input
             type="text"
@@ -209,13 +181,14 @@ const Expenses = () => {
             className="search-field"
             placeholder="Search..."
             ref={searchInputRef}
+            value={searchTerm}
             disabled={location.pathname === "/expenses/new"}
-            onChange={activateSearch}
+            onChange={handleChange}
           />
         </div>
       </div>
 
-      {/*Add expense form outlet*/ }
+      {/*Add expense form outlet*/}
       <Outlet />
 
       {expenses && expenses.length === 0 && (
@@ -224,7 +197,7 @@ const Expenses = () => {
       {expenses.length !== 0 && (
         <div>
           <ul>
-            {expenses.map((expense) => (
+            {searchFilter(expenses, searchTerm).map((expense) => (
               <ExpenseItem expense={expense} key={expense.id} />
             ))}
           </ul>

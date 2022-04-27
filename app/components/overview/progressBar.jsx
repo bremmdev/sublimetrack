@@ -6,7 +6,7 @@ const ProgressBar = (props) => {
 
   return (
     <div className="progressbar-container">
-      <h3 className="accent">
+      <h3>
         Budget left: {(props.budget - props.expense).toFixed(2)} / {props.budget.toFixed(2)}
       </h3>
       <div className="progressbar">

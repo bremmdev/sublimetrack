@@ -5,6 +5,7 @@ import DoughnutChart from '~/components/overview/DoughnutChart.jsx';
 import insightStyles from "~/styles/insights.css";
 import { getUser } from '~/utils/getUser.js';
 import { getExpenses } from '~/utils/getExpenses.js';
+import { ThemeContext } from '~/root.jsx';
 
 export const meta = () => ({
   title: "Sublimetrack - Insights"
@@ -47,6 +48,8 @@ export const loader = async ( { request }) => {
 }
 
 const Insights = () => {
+  const themeCtx = React.useContext(ThemeContext)
+
   const transition = useTransition();
   const { expenses, selectedYear } = useLoaderData();
   const yearSelectionRef = useRef();
@@ -110,14 +113,14 @@ const Insights = () => {
         <div className="expenses-chart hide-graph-mobile">
           {expenses && expenses.length !== 0 && (
             <>
-              <BarChart expenses={expenses} />
+              <BarChart theme={themeCtx ? themeCtx[0] : 'dark'} expenses={expenses} />
             </>
           )}
         </div>
         <div className="expenses-chart-donut hide-graph-mobile">
           {expenses && expenses.length !== 0 && (
             <>
-              <DoughnutChart expenses={expenses} />
+              <DoughnutChart theme={themeCtx ? themeCtx[0] : 'dark'} expenses={expenses} />
             </>
           )}
         </div>

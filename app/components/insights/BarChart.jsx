@@ -17,53 +17,58 @@ ChartJS.register(
   Legend
 );
 
-ChartJS.defaults.color = "white";
 
-const options = {
-  borderRadius: 4,
-  plugins: {
-    legend: {
-      labels: {
-        color: "white",
-        padding: 8,
-        boxWidth: 10,
-        usePointStyle: true,
-        font: { size: 13 },
-      },
-    },
-  },
-  scales: {
-    y: {
-      display: true,
-      grid: {
-        color: "#303456",
-      },
-      title: {
-        display: true,
-        text: "Expenses in $",
-        font: {
-          size: "13",
+
+const BarChart = ({ theme, expenses }) => {
+
+  ChartJS.defaults.color = theme === 'dark' ? "white" : '#330D0A'
+
+  //options for chart
+  const options = {
+    borderRadius: 4,
+    plugins: {
+      legend: {
+        labels: {
+          color: theme === 'dark' ? "white" : '#330D0A',
+          padding: 8,
+          boxWidth: 10,
+          usePointStyle: true,
+          font: { size: 13 },
         },
       },
     },
-    x: {
-      display: true,
-      borderColor: "#FFF",
-      grid: {
-        color: "#303456",
-      },
-      title: {
+    scales: {
+      y: {
         display: true,
-        text: "Month",
-        font: {
-          size: "13",
+        grid: {
+          color: "#303456",
+        },
+        title: {
+          display: true,
+          text: "Expenses in $",
+          font: {
+            size: "13",
+          },
+        },
+      },
+      x: {
+        display: true,
+        borderColor: theme === 'dark' ? "white" : '#330D0A',
+        grid: {
+          color: "#303456",
+        },
+        title: {
+          display: true,
+          text: "Month",
+          font: {
+            size: "13",
+          },
         },
       },
     },
-  },
-};
+  };
 
-const BarChart = ({ expenses }) => {
+
 
   //initilize monthly expenses to zero
   const expensesPerMonth = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8:0, 9: 0, 10: 0, 11: 0}
@@ -81,7 +86,7 @@ const BarChart = ({ expenses }) => {
       {
         label: "Expenses per month",
         data: Object.values(expensesPerMonth),
-        backgroundColor: "#4ddbff",
+        backgroundColor: theme === 'dark' ? "#00CCFF" : '#fc0156',
       },
     ],
   };

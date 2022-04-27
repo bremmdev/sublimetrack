@@ -7,6 +7,7 @@ import DoughnutChart from "~/components/overview/DoughnutChart.jsx";
 import { getUser } from "~/utils/getUser.js";
 import { getExpenses } from "~/utils/getExpenses.js";
 import { getCurrentBudgetForUser } from "~/utils/getCurrentBudgetForUser.js";
+import { ThemeContext } from "~/root.jsx";
 
 export const links = () => [{ href: expenseStyles, rel: "stylesheet" }, { href: overviewStyles, rel: "stylesheet" }, { href: progressBarStyles, rel: "stylesheet" }];
 
@@ -49,6 +50,7 @@ export const loader = async ({ request }) => {
 
 export default function Home() {
   const { user, expenses, currentBudget } = useLoaderData();
+  const themeCtx = React.useContext(ThemeContext)
   const transition = useTransition()
 
   //calculate expenses and balance
@@ -138,7 +140,7 @@ export default function Home() {
         {expenses && expenses.length !== 0 && (
           <>
             <DoughnutChart
-              expenses={expenses}
+              theme={themeCtx ? themeCtx[0] : 'dark'} expenses={expenses}
             />
           </>
         )}

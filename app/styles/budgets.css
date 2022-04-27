@@ -15,12 +15,12 @@
   justify-content: space-between;
   align-items:center;
   gap:1em;
-  border-top:1px solid white;
+  border-top:1px solid var(--text-color);
   font-weight:700;
 }
 
 .budgets-list li.active > div{
- color: var(--dark-accent-clr);
+ color: var(--accent-clr);
 }
 
 .budgets-list li:first-child{
@@ -41,7 +41,7 @@
 }
 
 .edit-budget-icon{
-  color:#FF5555;
+  color:var(--error-crl);
   font-size:1.5rem;
   transform:scale(1);
   margin-left:0.2em;

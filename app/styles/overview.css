@@ -4,7 +4,7 @@
 }
 
 .summary-card > div {
-  border-left:2px solid #fff;
+  border-left:2px solid var(--text-color);
   padding:0 2em;
 }
 .summary-card > div:first-of-type {

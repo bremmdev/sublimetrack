@@ -1,28 +1,39 @@
-import {
-  Links,
-  LiveReload,
-  Meta,
-  NavLink,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useCatch
-} from "remix";
+import { Links, LiveReload, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useCatch} from "remix";
+import { useState } from 'react'
+import { FiMonitor, FiSun } from "react-icons/fi";
+import { IoStatsChart, IoSettingsSharp, IoWalletOutline,} from "react-icons/io5";
+import { MdViewList, MdOutlineDarkMode } from "react-icons/md";
 
-import { FiMonitor } from "react-icons/fi";
-import {
-  IoStatsChart,
-  IoSettingsSharp,
-  IoWalletOutline,
-} from "react-icons/io5";
-import { MdViewList } from "react-icons/md";
-
-import logoUrl from "~/images/logo.svg";
+import logoDarkUrl from "~/images/logo.svg";
+import logoLightUrl from "~/images/logo_light.svg"
 import globalStyles from "~/styles/global.css";
 
 export const links = () => [{ href: globalStyles, rel: "stylesheet" }];
 
-export default function App() {
+
+
+export const ThemeContext = React.createContext()
+
+const clientThemeCode = `(() => {
+  console.log('nuuuu')
+})()`
+
+function SetThemeOnLoad() {
+  return <script dangerouslySetInnerHTML={{__html: clientThemeCode}}></script>
+}
+
+function ThemeProvider ({ children }) {
+  const [theme, setTheme] = useState('dark')
+
+  return (
+    <ThemeContext.Provider value={[theme, setTheme]}>
+      {children}
+    </ThemeContext.Provider>
+  ); 
+}
+
+function App() {
+
   return (
     <Document>
       <Layout>
@@ -32,14 +43,25 @@ export default function App() {
   );
 }
 
-function Document({ children, title }) {
+export default function AppWithProviders() {
   return (
-    <html lang="en">
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+}
+
+function Document({ children, title }) {
+  const [theme] = React.useContext(ThemeContext)
+
+  return (
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <SetThemeOnLoad />
       </head>
       <body>
         {children}
@@ -52,8 +74,16 @@ function Document({ children, title }) {
 }
 
 function Layout({ children }) {
+  const [theme, setTheme] = React.useContext(ThemeContext)  
+  const logoUrl = theme === 'dark' ? logoDarkUrl : logoLightUrl
+
+  const changeTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
+
   return (
     <div className="container">
+      <div className="theme-toggle" onClick={changeTheme}>{theme === 'light' ? <MdOutlineDarkMode className="theme-toggle-icon"/> : <FiSun className="theme-toggle-icon"/> }</div>
       <div className="nav-panel py-3">
         <div className="logo-container">
           <img src={logoUrl} alt="sublimetrack logo" className="logo" />
@@ -65,7 +95,6 @@ function Layout({ children }) {
         <nav className="navbar">
           <ul>
             <li>
-             
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -128,7 +157,7 @@ function Layout({ children }) {
         </nav>
       </div>
 
-      <main className="main-container p-3">{children}</main>
+      <main className="main-container p-4">{children}</main>
     </div>
   );
 }

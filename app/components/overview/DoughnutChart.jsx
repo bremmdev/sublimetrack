@@ -2,22 +2,25 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Legend, Tooltip, Title } from 'chart.js'
 ChartJS.register(ArcElement, Legend, Tooltip, Title);
 
+const DoughnutChart = ( { theme, expenses }) => {
+
+   //options for chart
 const options = {
   cutout: "60%",
   plugins: {
-    legend: { labels: { color: "white", padding: 8, boxWidth: 10, usePointStyle: true, font: { size:13} } },
+    legend: { labels: { color: theme === 'dark' ? "white" : '#330D0A', padding: 8, boxWidth: 10, usePointStyle: true, font: { size:13} } },
     title: {
       display: true,
       text: 'Expenses per category',
-      color: 'white',
+      color: theme === 'dark' ? "white" : '#330D0A',
       font: {
         size:18
       }
     }  
   },
 };
+ 
 
-const DoughnutChart = ( { expenses }) => {
 
   //get data from expenses
   let categories = [...new Set(expenses.map(expense => expense.category.name))]
